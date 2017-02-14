@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <constant name="struts.devMode" value="true" />
+    <constant name="struts.ui.theme" value="simple" />
+    <constant name="struts.custom.i18n.resources" value="msg" />
+    <package name="default" namespace="/" extends="struts-default">
+    	 
+    	<interceptors>
+    		<interceptor name="loginInterceptor" class="cn.itcast.erp.util.interceptor.LoginInterceptor"/>
+    		<interceptor name="exceptionInterceptor" class="cn.itcast.erp.util.interceptor.ExceptionInterceptor"/>
+    		<interceptor name="authInterceptor" class="cn.itcast.erp.util.interceptor.AuthInterceptor"/>
+    		
+    		<interceptor-stack name="systemStack">
+    			<interceptor-ref name="exceptionInterceptor"/>
+    			<interceptor-ref name="loginInterceptor"/>
+    			<interceptor-ref name="authInterceptor"/>
+    			<interceptor-ref name="defaultStack"/>
+    		</interceptor-stack>
+    		
+    	</interceptors>
+    	
+    	<default-interceptor-ref name="systemStack"/>
+    	 
+    	<global-results>
+    		<result name="noLogin">/WEB-INF/jsps/login.jsp</result>
+    		<result name="error">/WEB-INF/jsps/error.jsp</result>
+    		<result name="list">/WEB-INF/jsps/${actionName}/list.jsp</result>
+    		<result name="toList" type="redirectAction">${actionName}_list</result>
+    		<result name="input">/WEB-INF/jsps/${actionName}/input.jsp</result>
+    	</global-results>
+    	 
+    	<action name="page_*">
+    		<result>/WEB-INF/jsps/{1}.jsp</result>
+    	</action>
+    	
+    	<!-- Dep -->
+    	<action name="dep_*" class="depAction" method="{1}">
+    	</action>
+    	
+    	<!-- Emp -->
+    	<action name="emp_*" class="empAction" method="{1}">
+    		<result name="loginFail">/WEB-INF/jsps/login.jsp</result>
+    		<result name="loginSuccess">/WEB-INF/jsps/main.jsp</result>
+    		<result name="toChangePwd">/WEB-INF/jsps/emp/changePwd.jsp</result>
+    	</action>
+    	
+    	<!-- Role -->
+    	<action name="role_*" class="roleAction" method="{1}">
+    	</action>
+    	
+    	<!-- Res -->
+    	<action name="res_*" class="resAction" method="{1}">
+    	</action>
+    </package>
+</struts>
