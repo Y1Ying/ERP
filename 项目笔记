@@ -1,0 +1,206 @@
+一.项目介绍：
+	项目涉及前期课程知识点
+		1.	Struts2（包括拦截器，值栈访问，文件下载）
+		2.	Hibernate3（单表数据基本操作、关联关系数据操作、延迟加载）
+		3.	Spring3（Bean配置与管理，团队开发模式，AOP）
+		4.	ajax（异步请求获取数据）
+		5.	jquery（页面脚本动作+页面动态表格操作）
+		6.	mysql（数据库基本操作）
+		7.	SSH整合
+		8.	反射（反射的应用）
+		9.	Maven构建项目
+	项目追加知识点
+		1.	反射泛型类型（制作通用类）
+		2.	视图值与真实值应用
+		3.	报表工具（java读写Excel、jfreechart工具）
+		4.	Spring计时器任务
+		5.	Spring整合JavaMail（邮件发送）
+		6.	jquery页面开发实用技术
+		7.	火狐浏览器页面功能调试
+		8.	jquery-struts2-json-ajax整合
+	项目实用技巧
+		1.	通用类抽取制作
+		2.	代码生成器
+		3.	long型日期时间处理+页面日期组件
+		4.	统一的异常处理方案
+		5.	全局国际化应用
+		6.	页面动态表现
+		7.	遮罩层应用
+		8.	权限校验系统
+		9.	通用分页组件制作与使用（自定义标签）
+		10.	动态数据库表结构（备选）
+		11.	性能优化——二级缓存（备选）
+		
+二.登录页面业务流程分析：
+	1.点击登录，将用户输入的用户名、密码、验证码信息传入后台Action类
+	2.Action类将页面收集的数据传入业务层Ebo
+	3.Ebo类对密码进行MD5加密后，将数据传入数据层Impl
+	4.Impl类使用Hibernate模板查询，将数据库中的信息与传递的信息进行比对，将查询结果返回Ebo类
+	5.Ebo类将查询结果返回Action类
+	6.Action类对查询结果进行判定，如果不为null，则将查询结果（登录人信息）放入Session范围内，以备后期 使用，否则登录失败，返回登录界面，告知用户信息输入有误。
+	
+三.登录页面跳转分析：
+		1./ERP/index.jsp
+		2.执行document.location="page_login.action"
+		3.被拦截器拦截
+		4.执行Action跳转到登录页面
+	
+四：项目模块名：
+	实体模型类：模块名Model
+			(1) 常量真实值定义
+			(2) 常量视图值定义
+			(3) 常量集合定义
+			(4) 常量集合数据初始化
+			(5) 主键字段命名为uuid，Long型，数据库端设计自增
+			(6) 所有属性名上方添加注释，标记该字段含义
+			(7) 所有视图值定义
+			(8) 所有关系属性定义
+			(9) 所有属性封装方法getter/setter(视图值不提供setter方法)
+		
+	查询模型类：模块名QueryModel(按需求定义)
+			(1)	继承实体模型类
+			(2) 实体模型类中范围查询字段二次声明，在变量名后添加数字2
+			(3) 查询字段视图值定义
+			(4) 所有属性封装方法getter/setter(视图值不提供setter方法)
+			
+	数据层接口：模块名Dao
+			(1) 方法定义前添加public关键字
+			(2) 为方法添加文档注释(基础方法不添加，例如save,update等)
+			
+	数据层实现：模块名Impl
+			(1) 继承HibernateDaoSupport
+			(2) 实现数据层接口，并实现所有抽象方法
+			
+	业务层接口：模块名Ebi
+			(1) 添加注解式事务管理@Transactional
+			(2) 方法定义前添加public关键字
+			(3) 为方法添加文档注释(所有方法全部添加)
+			
+	业务层实现：模块名Ebo
+			(1) 实现业务层接口，并实现所有抽象方法
+			(2) 声明私有的数据层接口对象，并进行setter封装（注入）
+			
+	表现层类：模块名Action
+			(1) 继承ActionSupport
+			(2) 声明公共的实体模型类对象，变量为模块名单词首字小写+m
+			(3) 声明公共的实体模型查询对象，变量为模块名单词首字小写+qm
+			(4) 声明私有的业务层接口对象，并进行setter封装（注入）
+			
+五,拦截器--用户登录校验
+	项目中所有页面均放入WEB-INF，所有页面安全性得到了很大程度的提高。但是当用户登录后长时间没有操作时，会造成Session数据的过期，如果此时获取Session中的数据，必定会引发WEB引用的空指针异常，造成数据错误，程序崩溃。因此需要一种机制保障每次发送请求执行Action中的方法之前校验用户是否处于登录状态。
+	针对上述分析，可以选用两种实现方式。
+	1.AOP
+		AOP思想可以在任意方法执行前进行拦截，完成原始方法执行前的操作
+	2.Struts2拦截器
+		Struts2拦截器可以再Struts2的任意Action执行之前和之后，完成某些任务，其内部工作原理与AOP极其相似。
+	基于当前业务的需求，需要对每次Action访问进行拦截，Struts2拦截器更切近业务需求，并且在拦截器中获取Session数据比AOP更简便，因此优先选用拦截器。
+	3.拦截器的配置
+		（1）.自定义拦截器需要为其指定intercept方法，在其中定义拦截器所完成的任务。可以通过其参数ActionInvocation获取Action执行过程中对应的信息
+		（2）.自定义拦截器定义出来需要进行配置才可以使用，该配置在struts.xml中，声明出的拦截器并不被直接调用，需要配置默认拦截器调用方式，
+				如果直接配置了自定义拦截器为默认拦截器，Struts提供的内置拦截器将失效，因此在使用自定义拦截器时通常是配合struts的默认拦截器组合使用
+		（3）.适配器设计模式是Java的常用设计模式，使用适配器设计模式可以减少无用的接口方法实现
+	
+注意：1.第一次登录跳转的不是/WEB-INF/jsps/{1}.jsp，应该是<result name="noLogin">/WEB-INF/jsps/login.jsp</result>
+	2.在拦截器顺序的时候，自定义的要放在前面，默认的放在后面，先进行自己的判断，否则后面的默认判断都做完了也没有意义
+	
+六，知识点
+	1.导入页面分为静态与动态两种方式:静态导入相当于复制被导入页面到指定位置,动态导入是先将被导入页面的数据加载完毕编译后，然后再进行导入。
+		此处需求为将原始被抽取内容加入到原始位置，因此选择静态导入。
+		
+	2.获取T.class	泛型类型获取问题：
+		Class <T> entityClass = (Class <T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];   
+		其中public Type getGenericSuperclass()
+		用来返回表示当前Class 所表示的实体（类、接口、基本类型或 void）的直接超类的Type。如果这个直接超类是参数化类型的，
+		则返回的Type对象必须明确反映在源代码中声明时使用的类型
+		
+	3.SimpleDateFormat 是一个以与语言环境有关的方式来格式化和解析日期的具体类。它允许进行格式化（日期 -> 文本）、解析（文本 -> 日期）和规范化。 
+	
+	4.视图值：是一种用于界面显示的变量值，该值不具体对应某个数据库字段，它服务于某个数据库字段，
+		当数据库中的某个字段值不便于直接显示时，为该字段添加视图值，用于显示对应的信息
+		在真实值的set内进行初始化
+
+	5.Hibernate修改方案：
+		1.调用update方法，完成修改---------物理更新：硬更新		所有的都更新
+		2.使用快照思想，完成修改------------逻辑更新：软更新		只更新变的
+			详见EmpEbo update()
+			
+	6.获取登录IP的方法
+		HttpServletRequest request = ServletActionContext.getRequest();
+		String loginIp = request.getHeader("x-forwarded-for"); 
+		if(loginIp == null || loginIp.length() == 0 || "unknown".equalsIgnoreCase(loginIp)) { 
+			loginIp = request.getHeader("Proxy-Client-IP"); 
+		} 
+		if(loginIp == null || loginIp.length() == 0 || "unknown".equalsIgnoreCase(loginIp)) { 
+			loginIp = request.getHeader("WL-Proxy-Client-IP"); 
+		} 
+		if(loginIp == null || loginIp.length() == 0 || "unknown".equalsIgnoreCase(loginIp)) { 
+			loginIp = request.getRemoteAddr(); 
+		}
+		
+	7.页面的数据如果存在多个值具有相同的name使用数组或者集合均可接收，如果传递的数据不能直接使用，推荐数组，否则集合
+	
+	8.在配置多对多关系的时候
+		private Set<RoleModel> roles;
+		set集合就选用set标签，list集合选用bag标签
+	
+		<set name="roles" table="tbl_emp_role">
+			<key column="empUuid"></key>
+		<!-- -------------------------------------横线之上写自己，横线之下写对方 -->	
+			<many-to-many column="roleUuid" class="cn.itcast.erp.auth.role.vo.RoleModel"></many-to-many>
+		</set>
+		
+	
+七，项目中出现的问题：
+		1.页面中的资源（样式表、图片、脚本）没有加载到，页面的访问路径书写问题。静态页面中资源访问路径写的是相对路径，即../../的格式，此处无法获取。
+			解决：删除所有的../，使用当前应用目录获取的格式查看
+			总结：WEB-INF目录下的jsp文件无法直接获取，需要经由struts访问方式跳转才可以完成页面访问。
+		2.拦截器：
+			由于实现interceptor接口需要实现三个方法，其中初始化和销毁方法并不需要，所有可以采用继承AbstractInterceptor来实现。
+			设置拦截器的模板可以在struts的core包中struts-default.xml查找到
+			自定义拦截器通常配置在struts.xml中的最前面
+			
+		3.出现显示uuid没有默认值的错误：在数据库设计表的时候一定要记得选择自动递增
+		
+		4.在选择新建按钮的时候，添加完毕之后，如果选择重新加载框架，会出现两个一样的结果，服务器会发送两个一样的请求：
+			原因：用于添加操作执行完毕后，通过调用list()方法完成的页面跳转。对于服务器来说，本次操作进行的请求是一个
+			独立的请求，先添加数据，然后读取数据，最终展示数据。当进行重新载入框架时，页面时将上一次的请求重新发送到服务器
+			端进行再次执行，因此出现了全新的添加数据。
+			解决：使添加操作转化为独立的操作，添加完毕后跳转到列表页面重新发送请求
+			
+		5.项目中修改和保存可以合并在一起，区别就是设置一个隐藏的uuid，如果uuid有值就是修改，没有值就是添加，这种做法有一定的缺点
+			就是以后添加功能会导致这个模块的代码很长复杂，在实际开发需要拆分成两个模块。
+			
+		6.Struts2的属性驱动方式可以用于页面与Action间传值，在进行数值传递的时候多用此方法。
+		
+		7.写分页计算方法：(count + pageCount - 1) / pageCount
+		
+		8.javascript中如果需要对页面组件获取的值进行数字加操作，必须保障两个操作数据都是数字，否则将进行字符串连接运算。使用*1操作，
+		将字符串快速转换为数字格式。
+		
+		9.在查询时，会把页码当做查询值查询，此时在查询按钮要将页面值设置为1
+		
+		10.在选取时间的数据类型时：用Long记录的是毫秒值
+				Date是对Long的包装，优点：格式良好，缺点：计算时间复杂 比如要算180天前，Date考虑闰年
+				用Long直接System.currentTimeMillis()-180*24*60*60*1000
+				
+		11.在修改模块，不使用快照，在EmpEbo模块修改update代码为temp.getDm().setUuid(em.getDm().getUuid());
+			将会出现identifier of an instance of cn.itcast.erp.auth.dep.vo.DepModel was altered from 4 to 2
+				原因：Hibernate两块区域一级缓存和快照区，当我们加载OID为4的员工信息，根据关联关系加载了OID为2的部门数据，此时一级缓存区有OID为4的Emp和OID为2的Dep两个对象
+				temp.getDm().setUuid(2);  2->5
+				合理的做法是将temp对象关联到OID为5的部门数据上，而我们的非法做法：是将Dep对象的OID进行修改值从2到5		Hinernate中类型和OID确定后，这个对象就唯一了，不能改
+				
+			在修改功能外界传递了一个em对象，有些东西不能修改，则设计修改思路为，将所有都修改，然后把不让修改的再恢复
+				EmpModel temp = empDao.get(em.getUuid());//获得快照
+				em.setUserName(temp.getUserName());
+				empDao.update(em);
+				这么写将会出现：org.hibernate.NonUniqueObjectException:a different object with the same identifier value was already associated with the session:
+							[ cn.itcast.erp.auth.dep.vo.EmpModel#2]
+				当使用get的时候，在hibernate中就加载进去了一个对象，后来update时又会加载进来一个一样的对象
+				
+		12.日期查询的时候，两个日期输入相同，与数据日期也相同，但是查询结果为0：
+				两个查询相同时间，他们会计算的是1毫秒之间，应该在第二个日期那时间加上24小时 = 24*60*60*1000-1
+				
+		13.开发过程中，如果界面出现黄页：FreeMarker template error   表示标签选择错误
+					
+	
+			
