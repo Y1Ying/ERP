@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        '-//Hibernate/Hibernate Mapping DTD 3.0//EN'
+        'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>
+<hibernate-mapping>
+    <class name="cn.itcast.erp.auth.menu.vo.MenuModel" table="tbl_menu">
+        <id name="uuid">
+            <generator class="native" />
+        </id>
+        <property name="name"/>
+        <property name="url"/>
+        
+       
+        <!-- private MenuModel parent; -->
+        <many-to-one
+        	name="parent"
+        	column="puuid"
+        	class="cn.itcast.erp.auth.menu.vo.MenuModel"
+        ></many-to-one>
+         
+          <!-- 当进行级联删除时，一方对象首先要放弃与多方之间的关系，转化为外键字段设置为Null,如果此时外键字段设置不为null，
+ 		 引发下列异常Caused by:java sql.BatchUpdateException:Column 'puuid' cannot be null
+ 		 此时只需要在进行关系维护时，使一方对象不对关系进行维护即可，不操作外键—————inverse=true -->
+        <set name="children" cascade="delete" inverse="true">
+        	<key column="puuid"/>
+        	<one-to-many class="cn.itcast.erp.auth.menu.vo.MenuModel"/>
+        </set>
+    </class>
+</hibernate-mapping>

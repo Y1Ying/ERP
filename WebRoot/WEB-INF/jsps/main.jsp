@@ -134,7 +134,7 @@
 								<td><a class="hei" target="main" href="res_list.action">&nbsp;&nbsp;&nbsp;&nbsp;资源维护</a></td>
 							</tr>
 							<tr>
-								<td><a class="hei" target="main" href="menu/list.jsp">&nbsp;&nbsp;&nbsp;&nbsp;菜单维护</a></td>
+								<td><a class="hei" target="main" href="menu_list.action">&nbsp;&nbsp;&nbsp;&nbsp;菜单维护</a></td>
 							</tr>
 							<tr>
 								<td><a class="hei" target="main" href="store/list.jsp">&nbsp;&nbsp;&nbsp;&nbsp;仓库管理</a></td>

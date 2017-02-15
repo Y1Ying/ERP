@@ -55,5 +55,9 @@
     	<!-- Res -->
     	<action name="res_*" class="resAction" method="{1}">
     	</action>
+    	
+    	<!-- Menu -->
+    	<action name="menu_*" class="menuAction" method="{1}">
+    	</action>
     </package>
 </struts>
