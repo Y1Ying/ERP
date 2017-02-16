@@ -65,9 +65,7 @@
 				    <tr  bgcolor="#FFFFFF">
 				      <td width="18%" height="30" align="center">&nbsp;</td>
 				      <td width="82%" colspan="3">
-				      	<input type="checkbox"/>超级管理员
-				      	<input type="checkbox"/>销售部主管
-				      	<input type="checkbox"/>销售部员工
+				      	<s:checkboxlist name="roleUuids" list="roleList" listKey="uuid" listValue="name"></s:checkboxlist>
 				      </td>
 				    </tr>
 				    <tr  bgcolor="#FFFFFF">

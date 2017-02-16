@@ -1,11 +1,14 @@
 package cn.itcast.erp.auth.menu.bussiness.ebo;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import cn.itcast.erp.auth.menu.bussiness.ebi.MenuEbi;
 import cn.itcast.erp.auth.menu.dao.dao.MenuDao;
 import cn.itcast.erp.auth.menu.vo.MenuModel;
+import cn.itcast.erp.auth.role.vo.RoleModel;
 import cn.itcast.erp.util.base.BaseQueryModel;
 
 public class MenuEbo implements MenuEbi {
@@ -14,11 +17,12 @@ public class MenuEbo implements MenuEbi {
 		this.menuDao = menuDao;
 	}
 
+	// 废弃
 	@Override
 	public void save(MenuModel mm) {
 		menuDao.save(mm);
 	}
-
+	// 废弃
 	@Override
 	public void update(MenuModel mm) {
 		// 使用快照来进行修改操作
@@ -36,7 +40,6 @@ public class MenuEbo implements MenuEbi {
 		// 解决方案：级联删除前加载关系
 
 		MenuModel temp = menuDao.get(mm.getUuid());
-		System.out.println(mm.getUuid());
 		// temp对象此时就有了延迟加载功能，可以随时加载关系
 		menuDao.delete(temp);
 	}
@@ -64,6 +67,35 @@ public class MenuEbo implements MenuEbi {
 	@Override
 	public List<MenuModel> getAllOneLevel() {
 		return menuDao.getByPuuidIsOneOrZero();
+	}
+
+	@Override
+	public void save(MenuModel mm, Long[] roleUuids) {
+		// array->set->mm
+		Set<RoleModel> roles = new HashSet<RoleModel>();
+		for (Long uuid : roleUuids) {
+			RoleModel temp = new RoleModel();
+			temp.setUuid(uuid);
+			roles.add(temp);
+		}
+		mm.setRoles(roles);
+		menuDao.save(mm);
+	}
+
+	@Override
+	public void update(MenuModel mm, Long[] roleUuids) {
+		// 使用快照来进行修改操作
+		MenuModel temp = menuDao.get(mm.getUuid());
+		temp.setName(mm.getName());
+		temp.setUrl(mm.getUrl());
+
+		Set<RoleModel> roles = new HashSet<RoleModel>();
+		for (Long uuid : roleUuids) {
+			RoleModel temp2 = new RoleModel();
+			temp.setUuid(uuid);
+			roles.add(temp2);
+		}
+		temp.setRoles(roles);
 	}
 
 }

@@ -16,4 +16,8 @@ public interface MenuEbi extends BaseEbi<MenuModel> {
 	 */
 	public List<MenuModel> getAllOneLevel();
 
+	public void save(MenuModel mm, Long[] roleUuids);
+
+	public void update(MenuModel mm, Long[] roleUuids);
+
 }

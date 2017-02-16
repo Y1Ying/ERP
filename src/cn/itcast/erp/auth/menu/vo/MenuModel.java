@@ -2,6 +2,8 @@ package cn.itcast.erp.auth.menu.vo;
 
 import java.util.Set;
 
+import cn.itcast.erp.auth.role.vo.RoleModel;
+
 public class MenuModel {
 	public static final Long MENU_SYSTEM_MENU_UUID = 1L;
 
@@ -13,7 +15,15 @@ public class MenuModel {
 	private MenuModel parent;
 	// 对菜单一对多
 	private Set<MenuModel> children;
+	// 对角色多对多
+	private Set<RoleModel> roles;
 
+	public Set<RoleModel> getRoles() {
+		return roles;
+	}
+	public void setRoles(Set<RoleModel> roles) {
+		this.roles = roles;
+	}
 	public Set<MenuModel> getChildren() {
 		return children;
 	}

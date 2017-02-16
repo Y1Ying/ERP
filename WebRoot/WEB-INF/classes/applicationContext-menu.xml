@@ -8,6 +8,7 @@
 	<!-- Action -->
 	<bean id="menuAction" class="cn.itcast.erp.auth.menu.web.MenuAction" scope="prototype">
 		<property name="menuEbi" ref="menuEbi"/>
+		<property name="roleEbi" ref="roleEbi"/>
 	</bean>
 	<!-- Ebi -->
 	<bean id="menuEbi" class="cn.itcast.erp.auth.menu.bussiness.ebo.MenuEbo">

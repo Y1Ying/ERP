@@ -10,20 +10,31 @@
         <property name="name"/>
         <property name="url"/>
         
-       
-        <!-- private MenuModel parent; -->
-        <many-to-one
+        <many-to-one 
         	name="parent"
         	column="puuid"
         	class="cn.itcast.erp.auth.menu.vo.MenuModel"
-        ></many-to-one>
-         
-          <!-- 当进行级联删除时，一方对象首先要放弃与多方之间的关系，转化为外键字段设置为Null,如果此时外键字段设置不为null，
- 		 引发下列异常Caused by:java sql.BatchUpdateException:Column 'puuid' cannot be null
- 		 此时只需要在进行关系维护时，使一方对象不对关系进行维护即可，不操作外键—————inverse=true -->
+        	/>
+        <!--当进行级联删除时
+       	一方对象首先要放弃与多方之间的关系，转化为将外键字段设置为null
+       	如果此时外键字段设置为不允许为null,引发下列异常 	
+        Caused by: java.sql.BatchUpdateException: Column 'puuid' cannot be null
+		此时只需要在进行关系维护时，使一方对象不对关系进行维护即可，不操作外键————inverse=true -->
         <set name="children" cascade="delete" inverse="true">
         	<key column="puuid"/>
         	<one-to-many class="cn.itcast.erp.auth.menu.vo.MenuModel"/>
         </set>
+        
+        <!-- 对角色多对多 -->
+        <set name="roles" table="tbl_role_menu">
+        	<key column="menuUuid"/>
+        	<many-to-many
+        		column="roleUuid"
+        		class="cn.itcast.erp.auth.role.vo.RoleModel"
+        		/>
+        </set>
+        
+        
+        
     </class>
 </hibernate-mapping>
