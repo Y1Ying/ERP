@@ -18,6 +18,9 @@ public class MenuAction extends BaseAction {
 
 	// 列表
 	public String list() {
+		// 加载所有的一级菜单
+		List<MenuModel> parentList = menuEbi.getAllOneLevel();
+		put("parentList", parentList);
 		setDataTotal(menuEbi.getCount(mqm));
 		List<MenuModel> menuList = menuEbi.getAll(mqm, maxPageNum, pageCount);
 		put("menuList", menuList);

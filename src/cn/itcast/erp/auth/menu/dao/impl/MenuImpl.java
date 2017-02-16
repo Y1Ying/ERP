@@ -19,9 +19,14 @@ public class MenuImpl extends BaseImpl<MenuModel> implements MenuDao {
 		// 设置过滤掉系统菜单的条件 uuid != 1
 		dc.add(Restrictions.not(Restrictions.eq("uuid",
 				MenuModel.MENU_SYSTEM_MENU_UUID)));
-
+		if (mqm.getName() != null && mqm.getName().length() > 0) {
+			dc.add(Restrictions.like("name", "%" + mqm.getName().trim() + "%"));
+		}
+		if (mqm.getParent() != null && mqm.getParent().getUuid() != null
+				&& mqm.getParent().getUuid() != -1) {
+			dc.add(Restrictions.eq("parent", mqm.getParent()));
+		}
 	}
-
 	@Override
 	public List<MenuModel> getByPuuidIsOneOrZero() {
 		String hql = "from MenuModel where parent.uuid = ? or uuid = ?";

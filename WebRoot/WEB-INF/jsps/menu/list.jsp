@@ -32,14 +32,10 @@
 						<td width="68" height="30">&nbsp;</td>
 						<td width="123">&nbsp;</td>
 						<td width="62">菜单名称</td>
-						<td width="142"><input type="text" size="18" /></td>
+						<td width="142"><s:textfield name="mqm.name" size="18"/></td>
 						<td width="60">所属菜单</td>
 						<td width="149">
-							<select class="kuan">
-								<option value="-1">----请-选-择----</option>
-								<option value="1">商品管理</option>
-								<option value="0">采购管理</option>
-							</select>
+							<s:select name="mqm.parent.uuid" list="parentList" listKey="uuid" listValue="name" headerKey="-1" headerValue="----请-选-择----" cssClass="kuan"></s:select>
 						</td>
 						<td width="70"><a id="query"> <img src="images/can_b_01.gif" border="0" /> </a></td>
 						<td width="70"><a href="menu_input.action"><img src="images/can_b_02.gif" border="0" /></a></td>
@@ -77,6 +73,7 @@
 					</tr>
 				</s:iterator>
 				</table>
+				<%@ include file="/WEB-INF/jsps/tools/paging.jsp" %>
 			</div>
 		</s:form>
 	</div>
