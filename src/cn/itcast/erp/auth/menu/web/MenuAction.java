@@ -1,6 +1,10 @@
 package cn.itcast.erp.auth.menu.web;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import cn.itcast.erp.auth.menu.bussiness.ebi.MenuEbi;
 import cn.itcast.erp.auth.menu.vo.MenuModel;
@@ -71,5 +75,46 @@ public class MenuAction extends BaseAction {
 		menuEbi.delete(mm);
 		return TO_LIST;
 	}
+
+	// 显示菜单
+	public void showMenu() throws IOException {
+		HttpServletResponse response = getResponse();
+		// 手动设置字符集
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter pw = response.getWriter();
+
+		StringBuilder json = new StringBuilder();
+		json.append("[");
+		// 一级菜单
+		json.append("{\"text\":\"aaa\",\"hasChildren\":true,\"classes\":\"folder\"},");
+		// 二级菜单项
+		json.append("{\"text\":\"bbb\",\"hasChildren\":false,\"classes\":\"file\"},");
+		json.append("{\"text\":\"ccc\",\"hasChildren\":true}");
+		json.append("]");
+
+		pw.write(json.toString());
+		pw.flush();
+	}
+
+	// 显示菜单
+	// public String showMenu() throws IOException {
+	// // 返回一个JSON数据即可
+	// // 从request中获取参数root的值
+	// // 判断是不是source
+	// // 如果是source，返回json数组1
+	// // 否则返回json数组2
+	//
+	// // 在struts2的响应的方法中如何返回一个json数据
+	// // 写出json
+	// String json = "[{\"aa\":1}]";
+	// // 使用原始ServletAPI完成自定义的JSON内容写入响应
+	// HttpServletResponse responsed = getResponse();
+	// PrintWriter pw = responsed.getWriter();
+	// pw.write(json);
+	// pw.flush();
+	//
+	// // 如果设置当前返回Json,通过手工形式将Json写入请求，返回null，NONE
+	// return null;
+	// }
 
 }
