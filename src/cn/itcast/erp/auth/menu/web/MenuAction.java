@@ -85,11 +85,14 @@ public class MenuAction extends BaseAction {
 
 		StringBuilder json = new StringBuilder();
 		json.append("[");
-		// 一级菜单
-		json.append("{\"text\":\"aaa\",\"hasChildren\":true,\"classes\":\"folder\"},");
-		// 二级菜单项
-		json.append("{\"text\":\"bbb\",\"hasChildren\":false,\"classes\":\"file\"},");
-		json.append("{\"text\":\"ccc\",\"hasChildren\":true}");
+		// 获取所有一级菜单，加载
+		List<MenuModel> menuList = menuEbi.getAll();
+		for (MenuModel temp : menuList) {
+			json.append("{\"text\":\"");
+			json.append(temp.getName());
+			json.append("\",\"hasChildren\":true,\"classes\":\"folder\"},");
+		}
+		json.deleteCharAt(json.length() - 1);
 		json.append("]");
 
 		pw.write(json.toString());

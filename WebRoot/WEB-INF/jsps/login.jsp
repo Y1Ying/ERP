@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="css/index.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
-<title>蓝源进销存(教学版)-系统登录页</title>
+<title>进销存-系统登录页</title>
 <script>
 	$(function() {
 		$("#login_ok").click(function() {

@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="css/index.css" rel="stylesheet" type="text/css" />
-<title>北京蓝源进销存系统(教学版)-系统主页</title>
+<title>进销存系统-系统主页</title>
 <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
 </head>
 <body>
@@ -62,8 +62,7 @@
 				<table width="98%" border="0" cellpadding="0" cellspacing="0"
 					align="center">
 					<tr>
-						<td width="82%"><img src="images/icon_1.gif" />&nbsp; <a
-							class="lanyo" href="www.itcast.cn">传智播客 蓝源信息技术 2014</a></td>
+						
 						<td width="18%" valign="middle"><img src="images/icon_2.gif" />&nbsp;
 							<a class="lanyo" href="#">如有疑问请与技术人员联系</a></td>
 					</tr>
