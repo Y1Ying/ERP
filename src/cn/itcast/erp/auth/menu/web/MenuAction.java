@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-import cn.itcast.erp.auth.menu.bussiness.ebi.MenuEbi;
+import cn.itcast.erp.auth.menu.business.ebi.MenuEbi;
 import cn.itcast.erp.auth.menu.vo.MenuModel;
 import cn.itcast.erp.auth.menu.vo.MenuQueryModel;
 import cn.itcast.erp.auth.role.business.ebi.RoleEbi;
@@ -78,26 +78,75 @@ public class MenuAction extends BaseAction {
 
 	// 显示菜单
 	public void showMenu() throws IOException {
+		// 1.首先获取root参数
+		String root = getRequest().getParameter("root");
+		// 2.判断参数值 source id
 		HttpServletResponse response = getResponse();
-		// 手动设置字符集
+
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter pw = response.getWriter();
 
 		StringBuilder json = new StringBuilder();
 		json.append("[");
-		// 获取所有一级菜单，加载
-		List<MenuModel> menuList = menuEbi.getAll();
-		for (MenuModel temp : menuList) {
-			json.append("{\"text\":\"");
-			json.append(temp.getName());
-			json.append("\",\"hasChildren\":true,\"classes\":\"folder\"},");
+
+		if ("source".equals(root)) {
+			// 生成一级菜单
+			List<MenuModel> menuList = menuEbi.getAllOneLevelByEmp(getLogin()
+					.getUuid());
+			for (MenuModel temp : menuList) {
+				json.append("{\"text\":\"");
+				json.append(temp.getName());
+				json.append("\",\"hasChildren\":true,\"classes\":\"folder\",\"id\":\"");
+				json.append(temp.getUuid());
+				json.append("\"},");
+			}
+		} else {
+			// 生成二级菜单项
+			// 获取指定一级菜单的二级菜单项
+			Long puuid = new Long(root);
+			List<MenuModel> menuList = menuEbi.getByEmpAndPuuid(getLogin()
+					.getUuid(), puuid);
+			for (MenuModel temp : menuList) {
+				json.append("{\"text\":\"<a class='hei' target='main' href='");
+				json.append(temp.getUrl());
+				json.append("'>");
+				json.append(temp.getName());
+				json.append("</a>\",\"hasChildren\":false,\"classes\":\"file\"},");
+			}
 		}
+
 		json.deleteCharAt(json.length() - 1);
 		json.append("]");
 
 		pw.write(json.toString());
 		pw.flush();
 	}
+
+	// public void showMenu() throws IOException {
+	// HttpServletResponse response = getResponse();
+	// // 手动设置字符集
+	// response.setContentType("text/html;charset=utf-8");
+	// PrintWriter pw = response.getWriter();
+	//
+	// StringBuilder json = new StringBuilder();
+	// json.append("[");
+	//
+	// // 获取当前登录人所能进行操作的所有一级菜单
+	// List<MenuModel> menuList = menuEbi.getAllOneLevelByEmp(getLogin()
+	// .getUuid());
+	// for (MenuModel temp : menuList) {
+	// json.append("{\"text\":\"");
+	// json.append(temp.getName());
+	// json.append("\",\"hasChildren\":true,\"classes\":\"folder\",\"id\":\"");
+	// json.append(temp.getUuid());
+	// json.append("\"},");
+	// }
+	// json.deleteCharAt(json.length() - 1);
+	// json.append("]");
+	//
+	// pw.write(json.toString());
+	// pw.flush();
+	// }
 
 	// 显示菜单
 	// public String showMenu() throws IOException {

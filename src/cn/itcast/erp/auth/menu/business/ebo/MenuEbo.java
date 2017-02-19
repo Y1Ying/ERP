@@ -1,11 +1,11 @@
-package cn.itcast.erp.auth.menu.bussiness.ebo;
+package cn.itcast.erp.auth.menu.business.ebo;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import cn.itcast.erp.auth.menu.bussiness.ebi.MenuEbi;
+import cn.itcast.erp.auth.menu.business.ebi.MenuEbi;
 import cn.itcast.erp.auth.menu.dao.dao.MenuDao;
 import cn.itcast.erp.auth.menu.vo.MenuModel;
 import cn.itcast.erp.auth.role.vo.RoleModel;
@@ -92,10 +92,33 @@ public class MenuEbo implements MenuEbi {
 		Set<RoleModel> roles = new HashSet<RoleModel>();
 		for (Long uuid : roleUuids) {
 			RoleModel temp2 = new RoleModel();
-			temp.setUuid(uuid);
+			temp2.setUuid(uuid);
 			roles.add(temp2);
 		}
 		temp.setRoles(roles);
+	}
+
+	// 废弃
+	// public List<MenuModel> getAllOneLevel2() {
+	// // 1.使用现有的方法
+	// // MenuQueryModel mqm = new MenuQueryModel();
+	// // MenuModel parent = new MenuModel();
+	// // parent.setUuid(MenuModel.MENU_SYSTEM_MENU_UUID);
+	// // mqm.setParent(parent);
+	// // menuDao.getAll(mqm, 1, Integer.MAX_VALUE);
+	//
+	// // 2.重写方法
+	// return menuDao.getAllOneLevel2();
+	// }
+
+	@Override
+	public List<MenuModel> getAllOneLevelByEmp(Long uuid) {
+		return menuDao.getAllOneLevelByEmpUuid(uuid);
+	}
+
+	@Override
+	public List<MenuModel> getByEmpAndPuuid(Long uuid, Long puuid) {
+		return menuDao.getByEmpUuidAndPuuid(uuid,puuid);
 	}
 
 }

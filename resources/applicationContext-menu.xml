@@ -11,7 +11,7 @@
 		<property name="roleEbi" ref="roleEbi"/>
 	</bean>
 	<!-- Ebi -->
-	<bean id="menuEbi" class="cn.itcast.erp.auth.menu.bussiness.ebo.MenuEbo">
+	<bean id="menuEbi" class="cn.itcast.erp.auth.menu.business.ebo.MenuEbo">
 		<property name="menuDao" ref="menuDao"/>
 	</bean>
 	<!-- Dao -->

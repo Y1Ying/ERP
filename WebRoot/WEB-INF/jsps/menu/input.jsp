@@ -40,7 +40,7 @@
 				      </td>
 				      <td width="18%" align="center">所属父菜单</td>
 				      <td width="32%">
-				      	<s:select name="mm.parent.uuid" list="menuList" listKey="uuid" listValue="name" cssStyle="width:190px"/>
+				      	<s:select name="mm.parent.uuid" list="menuList" listKey="uuid" listValue="name" cssStyle="width:190px"></s:select>
 				      </td>
 				    </tr>
 				    <tr  bgcolor="#FFFFFF">

@@ -2,7 +2,7 @@ package cn.itcast.erp.auth.role.web;
 
 import java.util.List;
 
-import cn.itcast.erp.auth.menu.bussiness.ebi.MenuEbi;
+import cn.itcast.erp.auth.menu.business.ebi.MenuEbi;
 import cn.itcast.erp.auth.menu.vo.MenuModel;
 import cn.itcast.erp.auth.res.business.ebi.ResEbi;
 import cn.itcast.erp.auth.res.vo.ResModel;

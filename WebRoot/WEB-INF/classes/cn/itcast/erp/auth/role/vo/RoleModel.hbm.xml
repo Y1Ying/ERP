@@ -18,11 +18,20 @@
         		class="cn.itcast.erp.auth.res.vo.ResModel"
         		/>
         </set>
+        <!-- 对菜单多对多 -->
         <set name="menus" table="tbl_role_menu">
         	<key column="roleUuid"/>
         	<many-to-many
         		column="menuUuid"
         		class="cn.itcast.erp.auth.menu.vo.MenuModel"
+        		/>
+        </set>
+        <!-- 角色对员工多对多 -->
+        <set name="emps" table="tbl_emp_role" inverse="true">
+        	<key column="roleUuid"/>
+        	<many-to-many
+        		column="empUuid"
+        		class="cn.itcast.erp.auth.emp.vo.EmpModel"
         		/>
         </set>
     </class>

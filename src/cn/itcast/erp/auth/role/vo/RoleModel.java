@@ -2,6 +2,7 @@ package cn.itcast.erp.auth.role.vo;
 
 import java.util.Set;
 
+import cn.itcast.erp.auth.emp.vo.EmpModel;
 import cn.itcast.erp.auth.menu.vo.MenuModel;
 import cn.itcast.erp.auth.res.vo.ResModel;
 
@@ -12,10 +13,17 @@ public class RoleModel {
 
 	// 对资源多对多
 	private Set<ResModel> reses;
-
 	// 对菜单多对多
 	private Set<MenuModel> menus;
+	// 对员工多对多
+	private Set<EmpModel> emps;
 
+	public Set<EmpModel> getEmps() {
+		return emps;
+	}
+	public void setEmps(Set<EmpModel> emps) {
+		this.emps = emps;
+	}
 	public Set<MenuModel> getMenus() {
 		return menus;
 	}
