@@ -182,3 +182,8 @@
 			hibernate对于关系数据为null的处理方式是：断开所有关系即可，由于此时设置了inverse=true,又不维护关系，没有进行任何操作
 			解决方案：级联删除前加载关系
 			
+		17.解决在重启服务器时，出现在框中显示登录界面，嵌套的情况：
+			修改index.jsp 修改为全屏显示的top.document.location="page_login.action";
+			在struts.xml中将LoginInterceptor拦截器，将noLogin修改为跳转到index3.jsp
+			在拦截器中，设置放行
+			

@@ -26,7 +26,8 @@
     	<default-interceptor-ref name="systemStack"/>
     	 
     	<global-results>
-    		<result name="noLogin">/WEB-INF/jsps/login.jsp</result>
+    		<!-- 必须跳转到一个全屏显示功能对应的页面 -->
+    		<result name="noLogin">index.jsp</result>
     		<result name="error">/WEB-INF/jsps/error.jsp</result>
     		<result name="list">/WEB-INF/jsps/${actionName}/list.jsp</result>
     		<result name="toList" type="redirectAction">${actionName}_list</result>
