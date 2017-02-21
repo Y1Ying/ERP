@@ -59,5 +59,13 @@
     	<!-- Menu -->
     	<action name="menu_*" class="menuAction" method="{1}">
     	</action>
+    	
+    	<!-- Supplier -->
+    	<action name="supplier_*" class="supplierAction" method="{1}">
+    	</action>
+    	
+    	<!-- GoodsType -->
+    	<action name="goodsType_*" class="goodsTypeAction" method="{1}">
+    	</action>
     </package>
 </struts>

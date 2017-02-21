@@ -90,6 +90,8 @@ public class RoleEbo implements RoleEbi {
 		rm.setMenus(menus);
 		roleDao.save(rm);
 	}
+
+	// rm对象来自页面，包含name,code,resUuids,menuUuids
 	@Override
 	public void update(RoleModel rm, Long[] resUuids, Long[] menuUuids) {
 		Set<ResModel> reses = new HashSet<ResModel>();
@@ -107,6 +109,7 @@ public class RoleEbo implements RoleEbi {
 			menus.add(temp);
 		}
 		rm.setMenus(menus);
+		// 此时rm中不包含emps,emps是null
 		roleDao.update(rm);
 	}
 
