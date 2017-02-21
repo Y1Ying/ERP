@@ -12,8 +12,6 @@
         <property name="unit"/>
         <property name="inPrice"/>
         <property name="outPrice"/>
-        <property name="name"/>
-        <property name="name"/>
         
         <!-- 对类别多对一 -->
         <many-to-one

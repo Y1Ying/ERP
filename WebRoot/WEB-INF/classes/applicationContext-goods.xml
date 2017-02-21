@@ -8,6 +8,8 @@
 	<!-- Action -->
 	<bean id="goodsAction" class="cn.itcast.erp.invoice.goods.web.GoodsAction" scope="prototype">
 		<property name="goodsEbi" ref="goodsEbi"/>
+		<property name="supplierEbi" ref="supplierEbi"/>
+		<property name="goodsTypeEbi" ref="goodsTypeEbi"/>
 	</bean>
 	<!-- Ebi -->
 	<bean id="goodsEbi" class="cn.itcast.erp.invoice.goods.business.ebo.GoodsEbo">

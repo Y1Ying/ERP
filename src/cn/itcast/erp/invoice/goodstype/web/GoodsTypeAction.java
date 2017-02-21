@@ -58,4 +58,36 @@ public class GoodsTypeAction extends BaseAction {
 		goodsTypeEbi.delete(gm);
 		return TO_LIST;
 	}
+
+	// ---AJAX-------
+
+	// 1.设置struts返回result的type为json
+	// 2.设置对应action所在的package继承至json_default
+	// 3.将要返回的数据提供对应的get方法
+	private List<GoodsTypeModel> gtmList;
+	public List<GoodsTypeModel> getGtmList() {
+		return gtmList;
+	}
+	// ajax获取供应商对应的类别信息
+	public String ajaxGetBySm() {
+		// 根据供应商的uuid获取对应的类别信息
+		gtmList = goodsTypeEbi.getAllBySm(gm.getSm().getUuid());
+		// 传递数据（JSON）
+		// 1.使用json工具类JSONArray
+
+		return "ajaxGetBySm";
+	}
 }
+
+/*
+ * { "gtmList": [ { "name":"鼠标",
+ * "sm":{"address":"中关村大街鼎好大厦3楼","contact":"刘电脑","name"
+ * :"中关村鼎好302号摊","needs":0,"needsView":"自提","tele":"88888888","uuid":2},
+ * "uuid":5 }, { "name":"散热器",
+ * "sm":{"address":"中关村大街鼎好大厦3楼","contact":"刘电脑","name"
+ * :"中关村鼎好302号摊","needs":0,"needsView":"自提","tele":"88888888","uuid":2},
+ * "uuid":6 }, { "name":"键盘",
+ * "sm":{"address":"中关村大街鼎好大厦3楼","contact":"刘电脑","name"
+ * :"中关村鼎好302号摊","needs":0,"needsView":"自提","tele":"88888888","uuid":2},
+ * "uuid":7 } ] }
+ */

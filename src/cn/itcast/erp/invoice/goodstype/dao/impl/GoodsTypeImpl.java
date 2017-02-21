@@ -1,5 +1,7 @@
 package cn.itcast.erp.invoice.goodstype.dao.impl;
 
+import java.util.List;
+
 import org.hibernate.criterion.DetachedCriteria;
 
 import cn.itcast.erp.invoice.goodstype.dao.dao.GoodsTypeDao;
@@ -15,6 +17,12 @@ public class GoodsTypeImpl extends BaseImpl<GoodsTypeModel>
 	@Override
 	public void doQbc(DetachedCriteria dc, BaseQueryModel qm) {
 		GoodsTypeQueryModel gqm = (GoodsTypeQueryModel) qm;
+	}
+
+	@Override
+	public List<GoodsTypeModel> getAllBySmUuid(Long uuid) {
+		String hql = "from GoodsTypeModel where sm.uuid = ?";
+		return this.getHibernateTemplate().find(hql, uuid);
 	}
 
 }

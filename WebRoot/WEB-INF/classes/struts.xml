@@ -7,7 +7,7 @@
     <constant name="struts.devMode" value="true" />
     <constant name="struts.ui.theme" value="simple" />
     <constant name="struts.custom.i18n.resources" value="msg" />
-    <package name="default" namespace="/" extends="struts-default">
+    <package name="default" namespace="/" extends="json-default">
     	 
     	<interceptors>
     		<interceptor name="loginInterceptor" class="cn.itcast.erp.util.interceptor.LoginInterceptor"/>
@@ -67,6 +67,8 @@
     	
     	<!-- GoodsType -->
     	<action name="goodsType_*" class="goodsTypeAction" method="{1}">
+    	<!-- 想让结果发送json数据，只需要设置type="json" -->
+    		<result name="ajaxGetBySm" type="json"></result>
     	</action>
     	
     	<!-- Goods -->

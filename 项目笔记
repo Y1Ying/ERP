@@ -116,6 +116,15 @@
 			<many-to-many column="roleUuid" class="cn.itcast.erp.auth.role.vo.RoleModel"></many-to-many>
 		</set>
 		
+	9.用struts传递Json数据
+		1.导入jar包  struts2-json-plugin-2.3.7.jar
+		2.设置返回类别,设置struts返回result的type为json
+			 <!-- 想让结果发送json数据，只需要设置type="json" -->
+    		<result name="ajaxGetBySm" type="json"></result>
+    	3.修改 <package name="default" namespace="/" extends="json-default">
+    	4.将要返回的数据提供对应的get方法
+		
+		
 	
 六，项目中出现的问题：
 		1.页面中的资源（样式表、图片、脚本）没有加载到，页面的访问路径书写问题。静态页面中资源访问路径写的是相对路径，即../../的格式，此处无法获取。
