@@ -68,7 +68,27 @@
     	<!-- GoodsType -->
     	<action name="goodsType_*" class="goodsTypeAction" method="{1}">
     	<!-- 想让结果发送json数据，只需要设置type="json" -->
-    		<result name="ajaxGetBySm" type="json"></result>
+    		<result name="ajaxGetBySm" type="json">
+    			<!-- 设置返回的数据过滤 -->
+    			<!-- 第一种 -->
+    			<!-- <param name="includeProperties">
+    				gtmList集合中的对象的name属性
+    				该表达式是一个正则表达式
+    				gtmList\[\d+\]\.uuid,
+    				gtmList\[\d+\]\.name
+    			</param>
+    			去掉一个选项
+    			<param name="excludeProperties">
+    				gtmList\[\d+\]\.sm
+    			</param>  -->
+    			<!-- 第二种 -->
+    			<!-- 设置数据的来源从某个数据得到 -->
+    			<param name="root">action</param>
+    			<param name="includeProperties">
+    				gtmList\[\d+\]\.uuid,
+    				gtmList\[\d+\]\.name
+    			</param>
+    		</result>
     	</action>
     	
     	<!-- Goods -->

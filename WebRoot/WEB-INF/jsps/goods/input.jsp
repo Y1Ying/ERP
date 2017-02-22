@@ -5,7 +5,7 @@
 <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
 <script type="text/javascript" src="js/Calendar.js"></script>
 <script type="text/javascript">
-	/* $(function() {
+	$(function() {
 		$("#all").click(function() {
 			$("[name=roles]:checkbox").attr("checked",$("#all").attr("checked")=="checked");
 		});
@@ -14,19 +14,7 @@
                 $(this).attr("checked", !$(this).attr("checked"));
             });
 		});
-		$("#supplier").change(function(){
-			$.post("goodsTypeAction_getAll.action",{"gm.supplier.uuid":$(this).val()},function(data){
-				$("#goodsType").empty();
-				for(var i = 0;i<data.gtList.length;i++){
-					var goodsType = data.gtList[i];
-					var $option = $("<option value='"+goodsType.uuid+"'>"+goodsType.goodsTypeName+"</option>");	//创建option对象(jQuery格式)
-					$("#goodsType").append($option);				//将option对象添加到select组件中
-				}
-			});
-		});
-	}); */
-	
-	$(function(){
+		
 		//为id=supplier绑定事件
 		$("#supplier").change(function(){
 			//获取到选中的供应商，将uuid传递到后台完成数据获取操作
@@ -35,11 +23,20 @@
 			//参数2：发送的请求参数
 			//参数3：请求完毕后执行的内容（回调）
 			var supplierUuid = $(this).val();
-			$.post("goodsType_ajaxGetBySm.action.action",{"gm.sm.uuid":supplierUuid},function(){
-				
+			$.post("goodsType_ajaxGetBySm.action",{"gm.sm.uuid":supplierUuid},function(data){
+				//清除当前select中的项
+				$("#goodsType").empty();
+				var gtmList = data.gtmList;
+				for(var i = 0;i<gtmList.length;i++){
+					var gtm = gtmList[i];
+					//将获取的数据组织成select中的option选项，然后添加到select中
+					var $option = $("<option value='"+gtm.uuid+"'>"+gtm.name+"</option>");	//创建option对象(jQuery格式)
+					$("#goodsType").append($option);				//将option对象添加到select组件中
+				}
 			});
 		});
-	});
+	}); 
+	
 </script>
 <div class="content-right">
 	<div class="content-r-pic_w">
@@ -64,7 +61,7 @@
 				      </td>
 				      <td width="18%"align="center">商品类别</td>
 				      <td width="32%">
-				      <s:select list="gtmList" listKey="uuid" listValue="name" cssStyle="width:190px"></s:select>
+				      <s:select id="goodsType" list="gtmList" listKey="uuid" listValue="name" cssStyle="width:190px"></s:select>
 					  </td>
 				    </tr>
 				    <tr bgcolor="#FFFFFF">
