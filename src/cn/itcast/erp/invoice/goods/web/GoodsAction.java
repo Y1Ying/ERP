@@ -41,8 +41,8 @@ public class GoodsAction extends BaseAction {
 
 	// 到添加
 	public String input() {
-		// 加载所有供应商信息
-		List<SupplierModel> supplierList = supplierEbi.getAll();
+		// 加载所有具有类别信息的供应商信息
+		List<SupplierModel> supplierList = supplierEbi.getAllUnion();
 		put("supplierList", supplierList);
 		// 加载供应商对应的商品类别信息
 		List<GoodsTypeModel> gtmList = goodsTypeEbi.getAllBySm(supplierList

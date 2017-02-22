@@ -52,4 +52,9 @@ public class SupplierEbo implements SupplierEbi {
 		return supplierDao.getCount(qm);
 	}
 
+	@Override
+	public List<SupplierModel> getAllUnion() {
+		return supplierDao.getAllUnion();
+	}
+
 }

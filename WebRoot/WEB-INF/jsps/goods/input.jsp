@@ -46,7 +46,8 @@
 	</div>
 	<div class="content-text">
 		<div class="square-order">
-			<form action="list.jsp" method="post">
+			<s:form action="goods_save" method="post">
+			<s:hidden name="gm.uuid"/>
   			<div style="border:1px solid #cecece;">
 				<table width="100%"  border="0" cellpadding="0" cellspacing="0">
 				  <tr bgcolor="#FFFFFF">
@@ -61,7 +62,7 @@
 				      </td>
 				      <td width="18%"align="center">商品类别</td>
 				      <td width="32%">
-				      <s:select id="goodsType" list="gtmList" listKey="uuid" listValue="name" cssStyle="width:190px"></s:select>
+				      <s:select name="gm.gtm.uuid" id="goodsType" list="gtmList" listKey="uuid" listValue="name" cssStyle="width:190px"></s:select>
 					  </td>
 				    </tr>
 				    <tr bgcolor="#FFFFFF">
@@ -70,11 +71,11 @@
 				    <tr  bgcolor="#FFFFFF">
 				      <td align="center">商品名称</td>
 				      <td>
-				      	<input type="text" size="25"/>
+				      	<s:textfield name="gm.name" size="25"/>
 				      </td>
 				      <td  align="center">产&nbsp;&nbsp;&nbsp;&nbsp;地</td>
 				      <td >
-				      	<input type="text" size="25"/>
+				      	<s:textfield name="gm.origin" size="25"/>
 				      </td>
 				    </tr>
 				     <tr bgcolor="#FFFFFF">
@@ -83,10 +84,10 @@
 				    <tr  bgcolor="#FFFFFF">
 				      <td height="30" align="center">生产厂家</td>
 				      <td>
-				      	<input type="text" size="25"/>
+				      	<s:textfield name="gm.producer" size="25"/>
 				      <td align="center">单&nbsp;&nbsp;&nbsp;&nbsp;位</td>
 				      <td>
-				      	<input type="text" size="25"/>
+				      	<s:textfield name="gm.unit" size="25"/>
 					  </td>
 				     </tr>
 				    <tr bgcolor="#FFFFFF">
@@ -95,25 +96,14 @@
 				    <tr  bgcolor="#FFFFFF">
 				      <td height="30" align="center">进货单价</td>
 				      <td>
-				      	<input type="text" size="25"/>
+				      	<s:textfield name="gm.inPrice" size="25"/>
 					  </td>
 				      <td align="center">销售单价</td>
 				      <td>
-				      	<input type="text" size="25"/>
+				      	<s:textfield name="gm.outPrice" size="25"/>
 					  </td>
 				    </tr>
 				    <tr bgcolor="#FFFFFF">
-					  <td colspan="4">&nbsp;</td>
-					</tr>
-				    <tr  bgcolor="#FFFFFF">
-				      <td height="30" align="center">体&nbsp;&nbsp;&nbsp;&nbsp;积</td>
-				      <td>
-				      	<input type="text" size="25"/>
-					  </td>
-				      <td align="center">&nbsp;</td>
-				      <td>&nbsp;</td>
-				    </tr>
-				     <tr bgcolor="#FFFFFF">
 					  <td colspan="4">&nbsp;</td>
 					</tr>
 				</table>
@@ -133,7 +123,7 @@
 					</table>
 				</div>
 			</div>
-			</form>
+			</s:form>
 		</div><!--"square-order"end-->
 	</div><!--"content-text"end-->
 	<div class="content-bbg"><img src="images/content_bbg.jpg" /></div>

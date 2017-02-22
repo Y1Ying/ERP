@@ -1,6 +1,7 @@
 package cn.itcast.erp.invoice.goods.vo;
 
 import cn.itcast.erp.invoice.goodstype.vo.GoodsTypeModel;
+import cn.itcast.erp.util.format.FormatUtil;
 
 public class GoodsModel {
 	private Long uuid;
@@ -8,10 +9,21 @@ public class GoodsModel {
 	private String origin;
 	private String producer;
 	private String unit;
+
 	private Double inPrice;
 	private Double outPrice;
+	private String inPriceView;
+	private String outPriceView;
 
 	private GoodsTypeModel gtm;
+
+	public String getInPriceView() {
+		return inPriceView;
+	}
+
+	public String getOutPriceView() {
+		return outPriceView;
+	}
 
 	public Long getUuid() {
 		return uuid;
@@ -59,6 +71,7 @@ public class GoodsModel {
 
 	public void setInPrice(Double inPrice) {
 		this.inPrice = inPrice;
+		this.inPriceView = FormatUtil.formatMoney(inPrice);
 	}
 
 	public Double getOutPrice() {
@@ -67,6 +80,7 @@ public class GoodsModel {
 
 	public void setOutPrice(Double outPrice) {
 		this.outPrice = outPrice;
+		this.outPriceView = FormatUtil.formatMoney(outPrice);
 	}
 
 	public GoodsTypeModel getGtm() {

@@ -8,6 +8,7 @@
             <generator class="native" />
         </id>
         <property name="name"/>
+        <property name="origin"/>
         <property name="producer"/>
         <property name="unit"/>
         <property name="inPrice"/>
