@@ -9,6 +9,14 @@
 			$("[name='pageNum']").val(1);
 			$("form:first").submit();
 		});
+		//快捷查询
+		$(".unit").click(function(){
+			//获取点击的链接值
+			//将该值赋值到查询条件上
+			$("[name='gqm.unit']").val($(this).html());
+			$("[name='pageNum']").val(1);
+			$("form:first").submit();
+		});
 	});
 	function showMsg(msg,uuid){
 		//top.document.getElementById("context-msg").style.display = "block";
@@ -17,6 +25,7 @@
 		top.$('hid-action').value="actionName";
 		top.lock.show();
 	}
+	
 </script>
 <div class="content-right">
 	<div class="content-r-pic_w">
@@ -32,18 +41,14 @@
 					<tr>
 						<td>供应商:</td>
 						<td>
-							<select class="kuan">
-								<option value="-1">----请-选-择----</option>
-								<option value="1">康师傅</option>
-								<option value="2">七匹狼</option>
-							</select>
+							<s:select name="gqm.gtm.sm.uuid" list="supplierList" listKey="uuid" listValue="name" headerKey="-1" headerValue="----请-选-择----" cssStyle="width:130px"></s:select>
 						</td>
 						<td height="30">商&nbsp;品&nbsp;名</td>
 						<td><input type="text" size="14" /></td>
 						<td>生产厂家</td>
 						<td><input type="text" size="14" /></td>
 						<td>单&nbsp;&nbsp;&nbsp;&nbsp;位</td>
-						<td><input type="text" size="14" /></td>
+						<td><s:textfield name="gqm.unit" size="14"/></td>
 						<td width="70"><a href="goods_input.action"><img src="images/can_b_02.gif" border="0" /> </a></td>
 					</tr>
 					<tr>
@@ -81,11 +86,14 @@
 								<td>${origin }</td>
 								<td align="right">${inPriceView }&nbsp;元&nbsp;</td>
 								<td align="right">${outPriceView}&nbsp;元&nbsp;</td>
-								<td>${unit  }</td>
+								<td><a href="javascript:void(0)" class="unit">${unit}</a></td>
 								<td>
 									<img src="images/icon_3.gif" /> 
 									<span style="line-height:12px; text-align:center;"> 
-										<a href="./input.jsp" class="xiu">修改</a> 
+										<s:a action="goods_input" cssClass="xiu">
+											<s:param name="gm.uuid" value="uuid"/>
+											修改
+										</s:a>
 									</span> 
 									<img src="images/icon_04.gif" /> 
 									<span style="line-height:12px; text-align:center;"> 

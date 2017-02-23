@@ -33,6 +33,9 @@ public class GoodsAction extends BaseAction {
 
 	// 列表
 	public String list() {
+		// 加载供应商信息
+		List<SupplierModel> supplierList = supplierEbi.getAll();
+		put("supplierList", supplierList);
 		setDataTotal(goodsEbi.getCount(gqm));
 		List<GoodsModel> goodsList = goodsEbi.getAll(gqm, pageNum, pageCount);
 		put("goodsList", goodsList);
@@ -45,12 +48,17 @@ public class GoodsAction extends BaseAction {
 		List<SupplierModel> supplierList = supplierEbi.getAllUnion();
 		put("supplierList", supplierList);
 		// 加载供应商对应的商品类别信息
-		List<GoodsTypeModel> gtmList = goodsTypeEbi.getAllBySm(supplierList
-				.get(0).getUuid());
-		put("gtmList", gtmList);
+		Long supplierUuid = null;
 		if (gm.getUuid() != null) {
 			gm = goodsEbi.get(gm.getUuid());
+			// 修改
+			supplierUuid = gm.getGtm().getSm().getUuid();
+		} else {
+			// 添加
+			supplierUuid = supplierList.get(0).getUuid();
 		}
+		List<GoodsTypeModel> gtmList = goodsTypeEbi.getAllBySm(supplierUuid);
+		put("gtmList", gtmList);
 		return INPUT;
 	}
 	// 添加

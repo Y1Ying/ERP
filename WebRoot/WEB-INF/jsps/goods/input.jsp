@@ -58,7 +58,7 @@
 				    <tr  bgcolor="#FFFFFF">
 				      <td width="18%" height="30" align="center">供&nbsp;应&nbsp;商</td>
 				      <td width="32%">
-				      	<s:select id="supplier" list="supplierList" listKey="uuid" listValue="name" cssStyle="width:190px"></s:select>
+				      	<s:select name="gm.gtm.sm.uuid" id="supplier" list="supplierList" listKey="uuid" listValue="name" cssStyle="width:190px"></s:select>
 				      </td>
 				      <td width="18%"align="center">商品类别</td>
 				      <td width="32%">

@@ -94,5 +94,11 @@
     	<!-- Goods -->
     	<action name="goods_*" class="goodsAction" method="{1}">
     	</action>
+    	
+    	<!-- Order -->
+    	<action name="order_*" class="orderAction" method="{1}">
+    		<result name="buyList">/WEB-INF/jsps/order/buy/buyList.jsp</result>
+    		<result name="buyInput">/WEB-INF/jsps/order/buy/buyInput.jsp</result>
+    	</action>
     </package>
 </struts>

@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-import cn.itcast.erp.invoice.goods.vo.GoodsModel;
+import cn.itcast.erp.invoice.order.vo.OrderModel;
 
 public class GeneratorUtil {
 	private Class clazz;
@@ -20,8 +20,8 @@ public class GeneratorUtil {
 	private String dir; // cn/itcast/erp/auth/emp/vo
 
 	public static void main(String[] args) throws Exception {
-		// EmpModel,RoleModel,ResModel,GoodsModel
-		new GeneratorUtil(GoodsModel.class);
+		// EmpModel,RoleModel,ResModel,GoodsModel,OrderModel
+		new GeneratorUtil(OrderModel.class);
 		System.out.println("struts.xml未进行映射");
 		System.out.println("HbmXml未添加关联关系");
 		System.out.println("QueryModel未添加自定义范围查询条件");
