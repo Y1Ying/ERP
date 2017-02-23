@@ -88,4 +88,42 @@ public class OrderAction extends BaseAction {
 		return "buyInput";
 	}
 
+	// ---------AJAX----------
+	public Long supplierUuid;
+	public Long gtmUuid;
+	public Long gmUuid;
+
+	private List<GoodsTypeModel> gtmList;
+	private List<GoodsModel> gmList;
+	private GoodsModel gm;
+
+	public GoodsModel getGm() {
+		return gm;
+	}
+	public List<GoodsTypeModel> getGtmList() {
+		return gtmList;
+	}
+	public List<GoodsModel> getGmList() {
+		return gmList;
+	}
+	// ajax根据供应商的uuid获取类别和商品信息
+	public String ajaxGetGtmAndGm() {
+		gtmList = goodsTypeEbi.getAllBySm(supplierUuid);
+		gmList = goodsEbi.getAllByGtm(gtmList.get(0).getUuid());
+		gm = gmList.get(0);
+		return "ajaxGetGtmAndGm";
+	}
+
+	// ajax根据商品类别uuid获取商品信息
+	public String ajaxGetGm() {
+		gmList = goodsEbi.getAllByGtm(gtmUuid);
+		gm = gmList.get(0);
+		return "ajaxGetGm";
+	}
+
+	// ajax根据商品Uuid获取商品价格信息
+	public String ajaxGetPrice() {
+		gm = goodsEbi.get(gmUuid);
+		return "ajaxGetPrice";
+	}
 }

@@ -5,7 +5,8 @@
 <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
 </script>
 <script type="text/javascript">
-	function intToFloat(val){
+
+	/* function intToFloat(val){
 		return new Number(val).toFixed(2);
 	}
 	//修改供应商
@@ -225,6 +226,85 @@
 			//提交页面中的第一个form对象
 			$("form:first").submit();
 		});
+	}); */
+	
+	$(function(){
+		//修改供应商
+		$("#supplier").change(function(){
+			//ajax获取类别信息+商品信息，条件：供应商uuid
+			var supplierUuid = $(this).val();
+			$.post("order_ajaxGetGtmAndGm.action",{"supplierUuid":supplierUuid},function(data){
+				$(".goodsType").empty();
+				$(".goods").empty();
+				//data封装了两个Json数组 data.gtmList data.gmList  对象data.gm
+				
+				//修改类别select
+				var gtmList = data.gtmList;
+				for(var i=0;i<gtmList.length;i++){
+					var gtm = gtmList[i];
+					$op = $("<option value='"+gtm.uuid+"'>"+gtm.name+"</option>");
+					$(".goodsType").append($op);
+				}
+				//修改商品select
+				var gmList = data.gmList;
+				for(var i=0;i<gmList.length;i++){
+					var gm = gmList[i];
+					$op = $("<option value='"+gm.uuid+"'>"+gm.name+"</option>");
+					$(".goods").append($op);
+				}
+				
+				var price = data.gm.inPriceView; 
+				
+				//修改数量为1
+				$(".num").val(1);
+				//修改单价
+				$(".prices").val(price);
+				//修改合计
+				$(".total").html(price + " 元");
+			})
+		});
+		
+		//修改类别
+		$(".goodsType").change(function(){
+			//发送类别的uuid到后台，获取商品信息进行展示
+			var gtmUuid = $(this).val();
+			//ajax请求
+			$.post("order_ajaxGetGm.action",{"gtmUuid":gtmUuid},function(data){
+				$(".goods").empty();
+				//data中包含的数据有
+				//修改商品select
+				var gmList = data.gmList;
+				for(var i=0;i<gmList.length;i++){
+					var gm = gmList[i];
+					$op = $("<option value='"+gm.uuid+"'>"+gm.name+"</option>");
+					$(".goods").append($op);
+				}
+				
+				var price = data.gm.inPriceView; 
+				
+				//修改数量为1
+				$(".num").val(1);
+				//修改单价
+				$(".prices").val(price);
+				//修改合计
+				$(".total").html(price + " 元");
+			});
+		});
+		
+		//修改商品
+		$(".goods").change(function(){
+			var gmUuid = $(this).val();
+			$.post("order_ajaxGetPrice.action",{"gmUuid":gmUuid},function(data){
+				//data包含gm对象
+				var price = data.inPriceView
+				//修改数量为1
+				$(".num").val(1);
+				//修改单价
+				$(".prices").val(price);
+				//修改合计
+				$(".total").html(price + " 元");
+			});
+		});
 	});
 </script>
 <div class="content-right">
@@ -241,7 +321,7 @@
 					<tr>
 						<td width="68px" height="30">供应商：</td>
 						<td width="648px">
-							<s:select list="supplierList" listKey="uuid" listValue="name" cssStyle="width:190px"></s:select>
+							<s:select name="supplier" list="supplierList" listKey="uuid" listValue="name" cssStyle="width:190px"></s:select>
 						</td>
 						<td height="30">
 							<a id="add"><img src="images/can_b_02.gif" border="0" /> </a>
@@ -263,10 +343,10 @@
 					</tr>
 					<tr align="center" bgcolor="#FFFFFF">
 						<td height="30">
-							<s:select list="gtmList" listKey="uuid" listValue="name" cssStyle="width:200px"></s:select>
+							<s:select cssClass="goodsType" list="gtmList" listKey="uuid" listValue="name" cssStyle="width:200px"></s:select>
 						</td>
 						<td>
-							<s:select list="gmList" listKey="uuid" listValue="name" cssStyle="width:200px"></s:select>
+							<s:select cssClass="goods" list="gmList" listKey="uuid" listValue="name" cssStyle="width:200px"></s:select>
 						</td>
 						<td><input name="nums" class="num order_num" style="width:67px;border:1px solid black;text-align:right;padding:2px" type="text" value="1"/></td>
 						<td><input name="prices" class="prices order_num" style="width:93px;border:1px solid black;text-align:right;padding:2px" type="text" value="${gmList[0].inPriceView}"/> 元</td>

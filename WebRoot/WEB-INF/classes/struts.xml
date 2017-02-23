@@ -99,6 +99,32 @@
     	<action name="order_*" class="orderAction" method="{1}">
     		<result name="buyList">/WEB-INF/jsps/order/buy/buyList.jsp</result>
     		<result name="buyInput">/WEB-INF/jsps/order/buy/buyInput.jsp</result>
+    		
+    		<!-- AJAX -->
+    		<result name="ajaxGetGtmAndGm" type="json">
+    		<!-- 如果是action可以不写
+    		<param name="root">action</param> -->
+    			<param name="includeProperties">
+    				gtmList\[\d+\]\.uuid,
+    				gtmList\[\d+\]\.name,
+    				gmList\[\d+\]\.uuid,
+    				gmList\[\d+\]\.name,
+    				gm\.inPriceView
+    			</param>
+    		</result>
+    		<result name="ajaxGetGm" type="json">
+    			<param name="includeProperties">
+    				gmList\[\d+\]\.uuid,
+    				gmList\[\d+\]\.name,
+    				gm\.inPriceView
+    			</param>
+    		</result>
+    		<result name="ajaxGetPrice" type="json">
+    			<param name="root">gm</param>
+    			<param name="includeProperties">
+    				inPriceView
+    			</param>
+    		</result>
     	</action>
     </package>
 </struts>
