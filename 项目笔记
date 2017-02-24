@@ -210,3 +210,5 @@
 			在struts.xml中将LoginInterceptor拦截器，将noLogin修改为跳转到index3.jsp
 			在拦截器中，设置放行
 			
+		18.input导致select错误
+			

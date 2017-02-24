@@ -17,4 +17,6 @@ public interface SupplierEbi extends BaseEbi<SupplierModel> {
 	 */
 	public List<SupplierModel> getAllUnion();
 
+	public List<SupplierModel> getAllUnionTwo();
+
 }

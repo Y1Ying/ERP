@@ -74,11 +74,11 @@ public class OrderAction extends BaseAction {
 
 	// 进入采购订单
 	public String buyInput() {
-		// 供应商
-		List<SupplierModel> supplierList = supplierEbi.getAll();
-		// 第一个供应商类别
-		List<GoodsTypeModel> gtmList = goodsTypeEbi.getAllBySm(supplierList
-				.get(0).getUuid());
+		// 加载具有类别信息的供应商信息，类别里面必须有商品信息
+		List<SupplierModel> supplierList = supplierEbi.getAllUnionTwo();
+		// 第一个供应商具有商品的类别
+		List<GoodsTypeModel> gtmList = goodsTypeEbi
+				.getAllUnionBySm(supplierList.get(0).getUuid());
 		// 第一个类别的商品
 		List<GoodsModel> gmList = goodsEbi
 				.getAllByGtm(gtmList.get(0).getUuid());
@@ -108,7 +108,7 @@ public class OrderAction extends BaseAction {
 	}
 	// ajax根据供应商的uuid获取类别和商品信息
 	public String ajaxGetGtmAndGm() {
-		gtmList = goodsTypeEbi.getAllBySm(supplierUuid);
+		gtmList = goodsTypeEbi.getAllUnionBySm(supplierUuid);
 		gmList = goodsEbi.getAllByGtm(gtmList.get(0).getUuid());
 		gm = gmList.get(0);
 		return "ajaxGetGtmAndGm";

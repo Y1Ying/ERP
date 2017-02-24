@@ -19,4 +19,13 @@ public interface GoodsTypeEbi extends BaseEbi<GoodsTypeModel> {
 	 */
 	public List<GoodsTypeModel> getAllBySm(Long uuid);
 
+	/***
+	 * 获取指定供应商具有商品信息的类别信息
+	 * 
+	 * @param uuid
+	 *            供应商Uuid
+	 * @return
+	 */
+	public List<GoodsTypeModel> getAllUnionBySm(Long uuid);
+
 }

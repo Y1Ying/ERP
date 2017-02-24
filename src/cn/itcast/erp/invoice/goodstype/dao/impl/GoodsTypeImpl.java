@@ -25,4 +25,10 @@ public class GoodsTypeImpl extends BaseImpl<GoodsTypeModel>
 		return this.getHibernateTemplate().find(hql, uuid);
 	}
 
+	@Override
+	public List<GoodsTypeModel> getAllUnionBySmUuid(Long uuid) {
+		String hql = "select distinct gt from GoodsModel gm join gm.gtm gt where gt.sm.uuid = ?";
+		return this.getHibernateTemplate().find(hql, uuid);
+	}
+
 }

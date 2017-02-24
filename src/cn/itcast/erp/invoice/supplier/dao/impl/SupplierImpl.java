@@ -25,6 +25,12 @@ public class SupplierImpl extends BaseImpl<SupplierModel>
 		return this.getHibernateTemplate().find(hql);
 	}
 
+	@Override
+	public List<SupplierModel> getAllUnionTwo() {
+		String hql = "select distinct s from  GoodsModel gm join gm.gtm gt join gt.sm s ";
+		return this.getHibernateTemplate().find(hql);
+	}
+
 	// 测试
 	// public static void main(String[] args) {
 	// ApplicationContext ctx = new ClassPathXmlApplicationContext(

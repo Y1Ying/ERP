@@ -55,4 +55,9 @@ public class GoodsTypeEbo implements GoodsTypeEbi {
 		return goodsTypeDao.getAllBySmUuid(uuid);
 	}
 
+	@Override
+	public List<GoodsTypeModel> getAllUnionBySm(Long uuid) {
+		return goodsTypeDao.getAllUnionBySmUuid(uuid);
+	}
+
 }
