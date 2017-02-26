@@ -7,14 +7,23 @@ import java.util.Date;
 
 public class FormatUtil {
 	public static final String formatDate(Long time) {
+		if (time == null) {
+			return "";
+		}
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		return df.format(new Date(time));
 	}
 	public static final String formatTime(Long time) {
+		if (time == null) {
+			return "";
+		}
 		DateFormat df = new SimpleDateFormat("HH:mm:ss");
 		return df.format(new Date(time));
 	}
 	public static final String formatDateTime(Long time) {
+		if (time == null) {
+			return "";
+		}
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return df.format(new Date(time));
 	}
