@@ -305,6 +305,93 @@
 				$(".total").html(price + " 元");
 			});
 		});
+		
+		var clickFlag = true;
+		//为添加新订单项
+		$("#add").click(function(){
+			if(!clickFlag){
+				//不可以进行业务
+				return;
+			}
+			clickFlag = false;
+			
+			
+			//需求：动态生成行，添加到指定的位置
+			//分析：1.动态生成行：行中的数据是动态的---ajax获取数据
+			//2.添加到指定位置：添加到总计的上方---id=finalTr
+			var supplierUuid = $("#supplier").val();
+			//当前页面使用过的商品要通知后台，后台获取到数据后，将页面上使用过的商品过滤掉，再传递到页面
+			//将页面使用过的商品uuid传递到后台，传递的商品的uuid是多个数据
+			//多个数据如何设置参数？后台接受多个数据使用集合或者数组，要求页面传递的参数必须是相同的变量名
+			//为了使参数传递复杂度降低，将所有的uuid设置成特殊格式传递到后台，比如：字符串“1,2,3,4,5”，或者json数组[1,2,3,4]
+			
+			//使用过的商品的uuid都在class=goods的select中保存的，而这种select有可能是一个，也可能是多个
+			var goodsArr = $(".goods");
+			var used = "";
+			for(var i=0;i<goodsArr.length;i++){
+				used = used +"'"+ goodsArr[i].value + "',";
+			}
+			
+			
+			$.post("order_ajaxGetGtmAndGm2.action",{"supplierUuid":supplierUuid,"used":used},function(data){
+				//data中包含 data.gtmList data.gmList,data.gm.inPriceView
+				
+				//生成行
+				$tr = $('<tr bgcolor="#FFFFFF" align="center"></tr>');
+				
+				$td1 = $('<td height="30"></td>');
+				//类别select:class="goodType"
+				$gtmSelect = $('<select style="width:200px" class="goodsType"></select>');
+				
+				var gtmList = data.gtmList;
+				for(var i = 0;i<gtmList.length;i++){
+					var gtm = gtmList[i];
+					$op = $('<option value="'+gtm.uuid+'">'+gtm.name+'</option>');
+					$gtmSelect.append($op);
+				}	
+				$td1.append($gtmSelect);		    
+				$tr.append($td1);
+				
+				$td2 = $('<td></td>');
+				//类别select:class="goods"
+				$gmSelect = $('<select name="goodsUuids" style="width:200px" class="goods"></select>');
+				
+				var gmList = data.gmList;
+				for(var i = 0;i<gmList.length;i++){
+					var gm = gmList[i];
+					$op = $('<option value="'+gm.uuid+'">'+gm.name+'</option>');
+					$gmSelect.append($op);
+				}	
+				$td2.append($gmSelect);	
+				$tr.append($td2);
+				
+				$td3 = $('<td><input type="text" value="1" style="width:67px;border:1px solid black;text-align:right;padding:2px" class="num order_num" name="nums"></td>');
+				$tr.append($td3);
+				
+				var price = data.gm.inPriceView;
+				$td4 = $('<td><input type="text" value="'+price+'" style="width:93px;border:1px solid black;text-align:right;padding:2px" class="prices order_num" name="prices"> 元</td>');
+				$tr.append($td4);
+				
+				$td5 = $('<td align="right" class="total">'+price+'&nbsp;元</td>');
+				$tr.append($td5);
+				
+				$td6 = $('<td><a value="4" class="deleteBtn delete xiu"><img src="images/icon_04.gif"> 删除</a></td>');
+				$tr.append($td6);
+				
+				//添加
+				$("#finalTr").before($tr);
+				
+				//可操作控制状态
+				clickFlag = true;
+				
+				//判断添加按钮是否显示
+				//当类别仅剩余1个，并且商品仅剩1个时，添加按钮隐藏
+				if(gtmList.length == 1 && gm.length == 1){
+					//$("#add").hide();
+					$("#add").css("display","none");
+				}
+			});
+		});
 	});
 </script>
 <div class="content-right">

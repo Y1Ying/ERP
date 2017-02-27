@@ -114,6 +114,25 @@ public class OrderAction extends BaseAction {
 		return "ajaxGetGtmAndGm";
 	}
 
+	// 已经使用过的，需要过滤的商品uuid
+	public String used; // '11','22','33','44',
+	// ajax根据供应商的uuid获取类别和商品信息(具有数据过滤功能)
+	public String ajaxGetGtmAndGm2() {
+		gtmList = goodsTypeEbi.getAllUnionBySm(supplierUuid);
+		gmList = goodsEbi.getAllByGtm(gtmList.get(0).getUuid());
+		// 当前获取的商品信息的uuid具有重复的，要对其进行过滤
+		// 对集合进行迭代删除，逆序进行
+		// 从gmList总取出所有的元素，挨个迭代，与本次传递过来的used进行比对，比对完发现重复的，删除掉（逆序进行）
+		for (int i = gmList.size() - 1; i >= 0; i--) {
+			Long uuid = gmList.get(i).getUuid();
+			// 判断该uuid是否出现在used中
+			if (used.contains("'" + uuid + "'")) {
+				gmList.remove(i);
+			}
+		}
+		gm = gmList.get(0);
+		return "ajaxGetGtmAndGm";
+	}
 	// ajax根据商品类别uuid获取商品信息
 	public String ajaxGetGm() {
 		gmList = goodsEbi.getAllByGtm(gtmUuid);

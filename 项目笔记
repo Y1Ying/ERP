@@ -137,6 +137,10 @@
 			</param>  
 		2.<!-- 设置数据的来源从某个数据得到 -->
     			<param name="root">action</param>
+    			
+    11.hibernate中的session两个部分：一级缓存和快照
+    		save,update,delete是将数据放到一级缓存中，快照是没有数据的
+    		flush是将以及缓存和快照的数据进行同步，同时发生一条SQL语句
 		
 		
 	
@@ -209,6 +213,9 @@
 			修改index.jsp 修改为全屏显示的top.document.location="page_login.action";
 			在struts.xml中将LoginInterceptor拦截器，将noLogin修改为跳转到index3.jsp
 			在拦截器中，设置放行
+			
+		18.对集合做删除操作的时候，可以选用逆序进行，正序的话每次匹配到响应的元素，删除后，下一个元素会上来取代那个元素，如果也是要删除的元素，就会漏掉
+				索引问题
 			
 		
 			
