@@ -265,50 +265,78 @@
 		});
 		
 		//修改类别
-		$(".goodsType").change(function(){
+// 		$(".goodsType").change(function(){
+		$(".goodsType").live("change",function(){
+			
+					
+			//var $gmSelect = $(this).parent().next().children("select");	
+			//var $num = $(this).parent().next().next().children("input");
+			//var $prices = $(this).parent().next().next().next().children("input");
+			//var $totalPrice = $(this).parent().next().next().next().next();
+			
+			var $nowTr = $(this).parent().parent();
+			var $gmSelect = $nowTr.children("td:eq(1)").children("select");
+			var $num = $nowTr.children("td:eq(2)").children("input");
+			var $prices = $nowTr.children("td:eq(3)").children("input");
+			var $totalPrice = $nowTr.children("td:eq(4)");
+			
+		
 			//发送类别的uuid到后台，获取商品信息进行展示
 			var gtmUuid = $(this).val();
 			//ajax请求
 			$.post("order_ajaxGetGm.action",{"gtmUuid":gtmUuid},function(data){
-				$(".goods").empty();
+				$gmSelect.empty();
 				//data中包含的数据有
 				//修改商品select
 				var gmList = data.gmList;
 				for(var i=0;i<gmList.length;i++){
 					var gm = gmList[i];
 					$op = $("<option value='"+gm.uuid+"'>"+gm.name+"</option>");
-					$(".goods").append($op);
+					$gmSelect.append($op);
 				}
 				
 				var price = data.gm.inPriceView; 
 				
 				//修改数量为1
-				$(".num").val(1);
+				$num.val(1);
 				//修改单价
-				$(".prices").val(price);
+				$prices.val(price);
 				//修改合计
-				$(".total").html(price + " 元");
+				$totalPrice.html(price + " 元");
 			});
 		});
 		
 		//修改商品
-		$(".goods").change(function(){
+// 		$(".goods").change(function(){
+		$(".goods").live("change",function(){
+			var $nowTr = $(this).parent().parent();
+			var $gmSelect = $nowTr.children("td:eq(1)").children("select");
+			var $num = $nowTr.children("td:eq(2)").children("input");
+			var $prices = $nowTr.children("td:eq(3)").children("input");
+			var $totalPrice = $nowTr.children("td:eq(4)");	
+		
 			var gmUuid = $(this).val();
 			$.post("order_ajaxGetPrice.action",{"gmUuid":gmUuid},function(data){
 				//data包含gm对象
 				var price = data.inPriceView
 				//修改数量为1
-				$(".num").val(1);
+				$num.val(1);
 				//修改单价
-				$(".prices").val(price);
+				$prices.val(price);
 				//修改合计
-				$(".total").html(price + " 元");
+				$totalPrice.html(price + " 元");
 			});
 		});
 		
 		var clickFlag = true;
 		//为添加新订单项
 		$("#add").click(function(){
+			
+			//锁定供应商
+			$("#supplier").attr("disabled",true);
+			$(".goods").attr("disabled",true);
+			$(".goodsType").attr("disabled",true);
+		
 			if(!clickFlag){
 				//不可以进行业务
 				return;
@@ -340,7 +368,7 @@
 				$tr = $('<tr bgcolor="#FFFFFF" align="center"></tr>');
 				
 				$td1 = $('<td height="30"></td>');
-				//类别select:class="goodType"
+				//类别select:class="goodsType"
 				$gtmSelect = $('<select style="width:200px" class="goodsType"></select>');
 				
 				var gtmList = data.gtmList;
@@ -386,11 +414,24 @@
 				
 				//判断添加按钮是否显示
 				//当类别仅剩余1个，并且商品仅剩1个时，添加按钮隐藏
-				if(gtmList.length == 1 && gm.length == 1){
+				if(gtmList.length == 1 && gmList.length == 1){
 					//$("#add").hide();
 					$("#add").css("display","none");
 				}
 			});
+		});
+		
+		//删除行	未来事件的绑定
+		$(".deleteBtn").live("click",function(){
+			//如果只剩余一个删除链接，不能执行下列操作
+			if($(".deleteBtn").length == 1){
+				return ;
+			} 
+			//删除当前对象
+			var $nowTr = $(this).parent().parent();
+			$nowTr.remove();
+			//显示添加
+			$("#add").css("display","inline");
 		});
 	});
 </script>
