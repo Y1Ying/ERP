@@ -136,6 +136,14 @@ public class OrderAction extends BaseAction {
 	// ajax根据商品类别uuid获取商品信息
 	public String ajaxGetGm() {
 		gmList = goodsEbi.getAllByGtm(gtmUuid);
+		// 过滤数据
+		for (int i = gmList.size() - 1; i >= 0; i--) {
+			Long uuid = gmList.get(i).getUuid();
+			// 判断该uuid是否出现在used中
+			if (used.contains("'" + uuid + "'")) {
+				gmList.remove(i);
+			}
+		}
 		gm = gmList.get(0);
 		return "ajaxGetGm";
 	}
