@@ -430,6 +430,8 @@
 					//$("#add").hide();
 					$("#add").css("display","none");
 				}
+				//计算总价
+				total2();
 			});
 		});
 		
