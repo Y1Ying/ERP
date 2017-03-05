@@ -19,7 +19,29 @@ public class OrderModel {
 	public static final String ORDER_ORDERTYPE_OF_RETURN__VIEW = "采购退货";
 	public static final String ORDER_ORDERTYPE_OF_RETURN_S_VIEW = "销售退货";
 
+	// 第一位代表买，第二个代表流程第几步，第三个代表状态 1通过 0未通过
+	public static final Integer ORDER_TYPE_OF_BUY_NO_CHECK = 111;
+	public static final Integer ORDER_TYPE_OF_BUY_CHECK_PASS = 121;
+	public static final Integer ORDER_TYPE_OF_BUY_CHECK_NO_PASS = 120;
+	public static final Integer ORDER_TYPE_OF_BUY_BUYING = 131;
+	public static final Integer ORDER_TYPE_OF_BUY_IN_STORE = 141;
+	public static final Integer ORDER_TYPE_OF_BUY_COMPLETE = 199;
+
+	public static final String ORDER_TYPE_OF_BUY_NO_CHECK_VIEW = "未审核";
+	public static final String ORDER_TYPE_OF_BUY_CHECK_PASS_VIEW = "通过";
+	public static final String ORDER_TYPE_OF_BUY_CHECK_NO_PASS_VIEW = "驳回";
+	public static final String ORDER_TYPE_OF_BUY_BUYING_VIEW = "采购中";
+	public static final String ORDER_TYPE_OF_BUY_IN_STORE_VIEW = "入库中";
+	public static final String ORDER_TYPE_OF_BUY_COMPLETE_VIEW = "结单";
+
+	public static final Integer ORDER_TYPE_OF_SALE_NO_CHECK = 211;
+	public static final Integer ORDER_TYPE_OF_SALE_CHECK_PASS = 221;
+
+	public static final String ORDER_TYPE_OF_SALE_NO_CHECK_VIEW = "未审核";
+	public static final String ORDER_TYPE_OF_SALE_CHECK_PASS_VIEW = "通过";
+
 	public static final Map<Integer, String> orderTypeMap = new HashMap<Integer, String>();
+	public static final Map<Integer, String> typeMap = new HashMap<Integer, String>();
 	static {
 		orderTypeMap.put(ORDER_ORDERTYPE_OF_BUY, ORDER_ORDERTYPE_OF_BUY_VIEW);
 		orderTypeMap.put(ORDER_ORDERTYPE_OF_SALE, ORDER_ORDERTYPE_OF_SALE_VIEW);
@@ -27,6 +49,20 @@ public class OrderModel {
 				ORDER_ORDERTYPE_OF_RETURN__VIEW);
 		orderTypeMap.put(ORDER_ORDERTYPE_OF_RETURN_SALE,
 				ORDER_ORDERTYPE_OF_RETURN_S_VIEW);
+
+		typeMap.put(ORDER_TYPE_OF_BUY_NO_CHECK, ORDER_TYPE_OF_BUY_NO_CHECK_VIEW);
+		typeMap.put(ORDER_TYPE_OF_BUY_CHECK_PASS,
+				ORDER_TYPE_OF_BUY_CHECK_PASS_VIEW);
+		typeMap.put(ORDER_TYPE_OF_BUY_CHECK_NO_PASS,
+				ORDER_TYPE_OF_BUY_CHECK_NO_PASS_VIEW);
+		typeMap.put(ORDER_TYPE_OF_BUY_BUYING, ORDER_TYPE_OF_BUY_BUYING_VIEW);
+		typeMap.put(ORDER_TYPE_OF_BUY_IN_STORE, ORDER_TYPE_OF_BUY_IN_STORE_VIEW);
+		typeMap.put(ORDER_TYPE_OF_BUY_COMPLETE, ORDER_TYPE_OF_BUY_COMPLETE_VIEW);
+
+		typeMap.put(ORDER_TYPE_OF_SALE_NO_CHECK,
+				ORDER_TYPE_OF_SALE_NO_CHECK_VIEW);
+		typeMap.put(ORDER_TYPE_OF_SALE_CHECK_PASS,
+				ORDER_TYPE_OF_SALE_CHECK_PASS_VIEW);
 	}
 
 	private Long uuid;
@@ -104,6 +140,7 @@ public class OrderModel {
 	}
 	public void setType(Integer type) {
 		this.type = type;
+		this.typeView = typeMap.get(type);
 	}
 	public Double getTotalPrice() {
 		return totalPrice;

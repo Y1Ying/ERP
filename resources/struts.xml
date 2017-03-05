@@ -98,6 +98,7 @@
     	<!-- Order -->
     	<action name="order_*" class="orderAction" method="{1}">
     		<result name="buyList">/WEB-INF/jsps/order/buy/buyList.jsp</result>
+    		<result name="toBuyList" type="redirectAction">order_buyList</result>
     		<result name="buyInput">/WEB-INF/jsps/order/buy/buyInput.jsp</result>
     		
     		<!-- AJAX -->
@@ -125,6 +126,10 @@
     				inPriceView
     			</param>
     		</result>
+    	</action>
+    	
+    	<!-- OrderDetail -->
+    	<action name="orderDetail_*" class="orderDetailAction" method="{1}">
     	</action>
     </package>
 </struts>

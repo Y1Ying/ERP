@@ -504,6 +504,11 @@
 			//将最终结果放置到总计位置
 			$(".all").html(intToFloat(sum)+" 元");
 		}
+		
+		//提交表单
+		$("#submitOrder").click(function(){
+			$("form:first").submit();			
+		})
 	});
 		
 	function intToFloat(val){ 
@@ -517,14 +522,14 @@
 		</div>
 	</div>
 	<div class="content-text">
-		<form action="inList.jsp" method="post">
+		<s:form action="order_buySave" method="post">
 			<div class="square-o-top">
 				<table width="100%" border="0" cellpadding="0" cellspacing="0"
 					style="font-size:14px; font-weight:bold; font-family:"黑体";">
 					<tr>
 						<td width="68px" height="30">供应商：</td>
 						<td width="648px">
-							<s:select name="supplier" list="supplierList" listKey="uuid" listValue="name" cssStyle="width:190px"></s:select>
+							<s:select name="om.sm.uuid" id="supplier" list="supplierList" listKey="uuid" listValue="name" cssStyle="width:190px"></s:select>
 						</td>
 						<td height="30">
 							<a id="add"><img src="images/can_b_02.gif" border="0" /> </a>
@@ -549,7 +554,7 @@
 							<s:select cssClass="goodsType" list="gtmList" listKey="uuid" listValue="name" cssStyle="width:200px"></s:select>
 						</td>
 						<td>
-							<s:select cssClass="goods" list="gmList" listKey="uuid" listValue="name" cssStyle="width:200px"></s:select>
+							<s:select name="goodsUuids" cssClass="goods" list="gmList" listKey="uuid" listValue="name" cssStyle="width:200px"></s:select>
 						</td>
 						<td><input name="nums" class="num order_num" style="width:67px;border:1px solid black;text-align:right;padding:2px" type="text" value="1"/></td>
 						<td><input name="prices" class="prices order_num" style="width:93px;border:1px solid black;text-align:right;padding:2px" type="text" value="${gmList[0].inPriceView}"/> 元</td>
@@ -581,7 +586,7 @@
 				</div>
 			</div>
 			</div>
-		</form>
+		</s:form>
 	</div>
 	
 	<div class="content-bbg"></div>
