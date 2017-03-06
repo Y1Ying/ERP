@@ -36,5 +36,10 @@
         	column="supplierUuid"
         	class="cn.itcast.erp.invoice.supplier.vo.SupplierModel"
         />
+        
+        <set name="odms" cascade="save-update" inverse="true" order-by="uuid">
+        	<key column="orderUuid"/>
+        	<one-to-many class="cn.itcast.erp.invoice.orderdetail.vo.OrderDetailModel"/>
+        </set>
     </class>
 </hibernate-mapping>

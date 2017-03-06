@@ -69,6 +69,10 @@ public class OrderAction extends BaseAction {
 
 	// -------------采购相关--------------
 	public String buyList() {
+		setDataTotal(orderEbi.getCount(oqm));
+		List<OrderModel> orderList = orderEbi
+				.getAllBuy(oqm, pageNum, pageCount);
+		put("orderList", orderList);
 		return "buyList";
 	}
 
@@ -94,20 +98,15 @@ public class OrderAction extends BaseAction {
 
 	// 保存采购订单
 	public String buySave() {
-		System.out.println(om.getSm().getUuid());
-		System.out.println("------------------");
-		for (Long a : goodsUuids) {
-			System.out.println(a);
-		}
-		System.out.println("------------------");
-		for (Integer a : nums) {
-			System.out.println(a);
-		}
-		System.out.println("------------------");
-		for (Double a : prices) {
-			System.out.println(a);
-		}
+		orderEbi.saveBuyOrder(om, goodsUuids, nums, prices, getLogin());
 		return "toBuyList";
+	}
+
+	// 查看采购订单明细
+	public String buyDetail() {
+		// 根据om.uuid 获取对应信息，加载到详情页
+		om = orderEbi.get(om.getUuid());
+		return "buyDetail";
 	}
 
 	// ---------AJAX----------

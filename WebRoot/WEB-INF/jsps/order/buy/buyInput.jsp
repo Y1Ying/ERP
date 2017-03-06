@@ -317,10 +317,10 @@
 		});
 		
 		//修改商品
-// 		$(".goods").change(function(){
+		//$(".goods").change(function(){
 		$(".goods").live("change",function(){
 			var $nowTr = $(this).parent().parent();
-			var $gmSelect = $nowTr.children("td:eq(1)").children("select");
+			//var $gmSelect = $nowTr.children("td:eq(1)").children("select");
 			var $num = $nowTr.children("td:eq(2)").children("input");
 			var $prices = $nowTr.children("td:eq(3)").children("input");
 			var $totalPrice = $nowTr.children("td:eq(4)");	
@@ -465,6 +465,7 @@
 		});
 		
 		//修改单价
+		
 		$(".prices").live("keyup",function(){
 			//先把非数字的都替换掉，除了数字和. 
 			$(this).val($(this).val().replace(/[^\d.]/g,""));
@@ -507,8 +508,12 @@
 		
 		//提交表单
 		$("#submitOrder").click(function(){
+			//将要发送的数据设置为可发送状态
+			$("#supplier").attr("disabled",false);
+			$(".goods").attr("disabled",false);
+			//$(".goodsType").attr("disabled",false);
 			$("form:first").submit();			
-		})
+		});
 	});
 		
 	function intToFloat(val){ 

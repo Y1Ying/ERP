@@ -2,8 +2,11 @@ package cn.itcast.erp.invoice.order.vo;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import cn.itcast.erp.auth.emp.vo.EmpModel;
+import cn.itcast.erp.invoice.orderdetail.vo.OrderDetailModel;
 import cn.itcast.erp.invoice.supplier.vo.SupplierModel;
 import cn.itcast.erp.util.format.FormatUtil;
 
@@ -41,7 +44,9 @@ public class OrderModel {
 	public static final String ORDER_TYPE_OF_SALE_CHECK_PASS_VIEW = "通过";
 
 	public static final Map<Integer, String> orderTypeMap = new HashMap<Integer, String>();
-	public static final Map<Integer, String> typeMap = new HashMap<Integer, String>();
+	public static final Map<Integer, String> buyTypeMap = new TreeMap<Integer, String>();
+	public static final Map<Integer, String> saleTypeMap = new TreeMap<Integer, String>();
+	private static final Map<Integer, String> typeMap = new HashMap<Integer, String>();
 	static {
 		orderTypeMap.put(ORDER_ORDERTYPE_OF_BUY, ORDER_ORDERTYPE_OF_BUY_VIEW);
 		orderTypeMap.put(ORDER_ORDERTYPE_OF_SALE, ORDER_ORDERTYPE_OF_SALE_VIEW);
@@ -50,19 +55,25 @@ public class OrderModel {
 		orderTypeMap.put(ORDER_ORDERTYPE_OF_RETURN_SALE,
 				ORDER_ORDERTYPE_OF_RETURN_S_VIEW);
 
-		typeMap.put(ORDER_TYPE_OF_BUY_NO_CHECK, ORDER_TYPE_OF_BUY_NO_CHECK_VIEW);
-		typeMap.put(ORDER_TYPE_OF_BUY_CHECK_PASS,
+		buyTypeMap.put(ORDER_TYPE_OF_BUY_NO_CHECK,
+				ORDER_TYPE_OF_BUY_NO_CHECK_VIEW);
+		buyTypeMap.put(ORDER_TYPE_OF_BUY_CHECK_PASS,
 				ORDER_TYPE_OF_BUY_CHECK_PASS_VIEW);
-		typeMap.put(ORDER_TYPE_OF_BUY_CHECK_NO_PASS,
+		buyTypeMap.put(ORDER_TYPE_OF_BUY_CHECK_NO_PASS,
 				ORDER_TYPE_OF_BUY_CHECK_NO_PASS_VIEW);
-		typeMap.put(ORDER_TYPE_OF_BUY_BUYING, ORDER_TYPE_OF_BUY_BUYING_VIEW);
-		typeMap.put(ORDER_TYPE_OF_BUY_IN_STORE, ORDER_TYPE_OF_BUY_IN_STORE_VIEW);
-		typeMap.put(ORDER_TYPE_OF_BUY_COMPLETE, ORDER_TYPE_OF_BUY_COMPLETE_VIEW);
+		buyTypeMap.put(ORDER_TYPE_OF_BUY_BUYING, ORDER_TYPE_OF_BUY_BUYING_VIEW);
+		buyTypeMap.put(ORDER_TYPE_OF_BUY_IN_STORE,
+				ORDER_TYPE_OF_BUY_IN_STORE_VIEW);
+		buyTypeMap.put(ORDER_TYPE_OF_BUY_COMPLETE,
+				ORDER_TYPE_OF_BUY_COMPLETE_VIEW);
 
-		typeMap.put(ORDER_TYPE_OF_SALE_NO_CHECK,
+		saleTypeMap.put(ORDER_TYPE_OF_SALE_NO_CHECK,
 				ORDER_TYPE_OF_SALE_NO_CHECK_VIEW);
-		typeMap.put(ORDER_TYPE_OF_SALE_CHECK_PASS,
+		saleTypeMap.put(ORDER_TYPE_OF_SALE_CHECK_PASS,
 				ORDER_TYPE_OF_SALE_CHECK_PASS_VIEW);
+
+		typeMap.putAll(buyTypeMap);
+		typeMap.putAll(saleTypeMap);
 	}
 
 	private Long uuid;
@@ -89,6 +100,15 @@ public class OrderModel {
 	private EmpModel completer;
 	private SupplierModel sm;
 
+	// 对订单明细一对多
+	private Set<OrderDetailModel> odms;
+
+	public Set<OrderDetailModel> getOdms() {
+		return odms;
+	}
+	public void setOdms(Set<OrderDetailModel> odms) {
+		this.odms = odms;
+	}
 	public Long getUuid() {
 		return uuid;
 	}

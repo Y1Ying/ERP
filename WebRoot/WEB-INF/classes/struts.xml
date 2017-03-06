@@ -100,6 +100,7 @@
     		<result name="buyList">/WEB-INF/jsps/order/buy/buyList.jsp</result>
     		<result name="toBuyList" type="redirectAction">order_buyList</result>
     		<result name="buyInput">/WEB-INF/jsps/order/buy/buyInput.jsp</result>
+    		<result name="buyDetail">/WEB-INF/jsps/order/buy/buyDetail.jsp</result>
     		
     		<!-- AJAX -->
     		<result name="ajaxGetGtmAndGm" type="json">
