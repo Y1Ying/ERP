@@ -109,6 +109,18 @@ public class OrderAction extends BaseAction {
 		return "buyDetail";
 	}
 
+	// 采购审核相关
+
+	public String buyCheckList() {
+		// 要加载订单数据列表
+		setDataTotal(orderEbi.getCountBuyCheck(oqm));
+		List<OrderModel> orderList = orderEbi.getAllBuyCheck(oqm, pageNum,
+				pageCount);
+		put("orderList", orderList);
+		return "buyCheckList";
+
+	}
+
 	// ---------AJAX----------
 	public Long supplierUuid;
 	public Long gtmUuid;

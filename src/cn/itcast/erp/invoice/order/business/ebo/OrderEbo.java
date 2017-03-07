@@ -111,4 +111,21 @@ public class OrderEbo implements OrderEbi {
 		return orderDao.getAll(oqm, pageNum, pageCount);
 	}
 
+	private Integer[] buyCheckOrderTypes = new Integer[]{
+			OrderModel.ORDER_ORDERTYPE_OF_BUY,
+			OrderModel.ORDER_ORDERTYPE_OF_RETURN_BUY};
+
+	@Override
+	public int getCountBuyCheck(OrderQueryModel oqm) {
+		return orderDao.getCountOrderTypes(oqm, buyCheckOrderTypes);
+	}
+
+	@Override
+	public List<OrderModel> getAllBuyCheck(OrderQueryModel oqm,
+			Integer pageNum, Integer pageCount) {
+		// 条件中一组订单类别为采购或采购退货
+		return orderDao.getAllOrderTypes(oqm, pageNum, pageCount,
+				buyCheckOrderTypes);
+	}
+
 }

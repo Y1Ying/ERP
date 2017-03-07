@@ -97,10 +97,14 @@
     	
     	<!-- Order -->
     	<action name="order_*" class="orderAction" method="{1}">
+    		<!-- 申请 -->
     		<result name="buyList">/WEB-INF/jsps/order/buy/buyList.jsp</result>
     		<result name="toBuyList" type="redirectAction">order_buyList</result>
     		<result name="buyInput">/WEB-INF/jsps/order/buy/buyInput.jsp</result>
     		<result name="buyDetail">/WEB-INF/jsps/order/buy/buyDetail.jsp</result>
+    		
+    		<!-- 审核 -->
+    		<result name="buyCheckList">/WEB-INF/jsps/order/buy/buyCheckList.jsp</result>
     		
     		<!-- AJAX -->
     		<result name="ajaxGetGtmAndGm" type="json">
