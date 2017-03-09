@@ -13,6 +13,7 @@ import cn.itcast.erp.invoice.order.vo.OrderModel;
 import cn.itcast.erp.invoice.order.vo.OrderQueryModel;
 import cn.itcast.erp.invoice.orderdetail.vo.OrderDetailModel;
 import cn.itcast.erp.util.base.BaseQueryModel;
+import cn.itcast.erp.util.exception.AppException;
 import cn.itcast.erp.util.num.NumUtil;
 
 public class OrderEbo implements OrderEbi {
@@ -126,6 +127,66 @@ public class OrderEbo implements OrderEbi {
 		// 条件中一组订单类别为采购或采购退货
 		return orderDao.getAllOrderTypes(oqm, pageNum, pageCount,
 				buyCheckOrderTypes);
+	}
+
+	@Override
+	public void buyCheckPass(Long uuid, EmpModel checker) {
+		// 审核实际时修改业务
+		// 快照更新
+		OrderModel temp = orderDao.get(uuid);
+
+		// 逻辑校验：比对的数据必须是从数据库中取出的数据，而不能使用页面传递的数据
+		if (!temp.getType().equals(OrderModel.ORDER_TYPE_OF_BUY_NO_CHECK)) {
+			throw new AppException("对不起！请不要进行非法操作");
+		}
+		// 订单状态 type
+		temp.setType(OrderModel.ORDER_TYPE_OF_BUY_CHECK_PASS);
+		// 审核时间
+		temp.setCheckTime(System.currentTimeMillis());
+		// 审核人
+		temp.setChecker(checker);
+	}
+
+	@Override
+	public void buyCheckNoPass(Long uuid, EmpModel checker) {
+		OrderModel temp = orderDao.get(uuid);
+		if (!temp.getType().equals(OrderModel.ORDER_TYPE_OF_BUY_NO_CHECK)) {
+			throw new AppException("对不起！请不要进行非法操作");
+		}
+		temp.setType(OrderModel.ORDER_TYPE_OF_BUY_CHECK_NO_PASS);
+		temp.setCheckTime(System.currentTimeMillis());
+		temp.setChecker(checker);
+	}
+
+	private Integer[] taskTypes = new Integer[]{
+			OrderModel.ORDER_TYPE_OF_BUY_CHECK_PASS,
+			OrderModel.ORDER_TYPE_OF_BUY_BUYING,
+			OrderModel.ORDER_TYPE_OF_BUY_IN_STORE,
+			OrderModel.ORDER_TYPE_OF_BUY_COMPLETE};
+
+	@Override
+	public int getCountTask(OrderQueryModel oqm) {
+		return orderDao.getAllTypes(oqm, taskTypes);
+	}
+
+	@Override
+	public List<OrderModel> getAllTask(OrderQueryModel oqm, Integer pageNum,
+			Integer pageCount) {
+		// 运输的任务必须是已经审核通过的
+		return orderDao.getAllTypes(oqm, pageNum, pageCount, taskTypes);
+	}
+
+	@Override
+	public void assignTask(Long uuid, EmpModel completer) {
+		OrderModel temp = orderDao.get(uuid);
+		// 逻辑校验(集合包含性判定)
+		if (!temp.getType().equals(OrderModel.ORDER_TYPE_OF_BUY_CHECK_PASS)) {
+			throw new AppException("对不起！请不要进行非法操作");
+		}
+		// 设置状态
+		temp.setType(OrderModel.ORDER_TYPE_OF_BUY_BUYING);
+		// 设置跟单人
+		temp.setCompleter(completer);
 	}
 
 }

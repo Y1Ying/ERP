@@ -11,6 +11,7 @@
 		<property name="goodsEbi" ref="goodsEbi"/>
 		<property name="goodsTypeEbi" ref="goodsTypeEbi"/>
 		<property name="supplierEbi" ref="supplierEbi"/>
+		<property name="empEbi" ref="empEbi"/>
 	</bean>
 	<!-- Ebi -->
 	<bean id="orderEbi" class="cn.itcast.erp.invoice.order.business.ebo.OrderEbo">

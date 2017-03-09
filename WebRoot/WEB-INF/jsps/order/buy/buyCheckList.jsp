@@ -72,7 +72,15 @@
 							<td>${totalNum }</td>
 							<td align="right">${totalPriceView }  元</td>
 							<td>
-								<a href="./inApprove.jsp">审核</a>
+								<s:if test="type == @cn.itcast.erp.invoice.order.vo.OrderModel@ORDER_TYPE_OF_BUY_NO_CHECK">
+									<s:a action="order_buyCheckDetail" cssClass="xiu">
+										<s:param name="om.uuid" value="uuid"/>
+										审核
+									</s:a>
+								</s:if>
+								<s:else>
+									<span style="color:red">${typeView}</span>
+								</s:else>
 							</td>
 						</tr>
 					</s:iterator>

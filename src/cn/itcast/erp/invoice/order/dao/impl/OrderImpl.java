@@ -30,9 +30,15 @@ public class OrderImpl extends BaseImpl<OrderModel> implements OrderDao {
 		}
 	}
 
-	public void doQbc2(DetachedCriteria dc, BaseQueryModel qm,
+	private void doQbc2(DetachedCriteria dc, BaseQueryModel qm,
 			Integer[] orderTypes) {
 		dc.add(Restrictions.in("orderType", orderTypes));
+		doQbc(dc, qm);
+	}
+
+	private void doQbc3(DetachedCriteria dc, BaseQueryModel qm,
+			Integer[] orderTypes) {
+		dc.add(Restrictions.in("type", orderTypes));
 		doQbc(dc, qm);
 	}
 
@@ -48,10 +54,28 @@ public class OrderImpl extends BaseImpl<OrderModel> implements OrderDao {
 	}
 
 	@Override
-	public int getCountOrderTypes(OrderQueryModel oqm, Integer[] orderTypes) {
+	public Integer getCountOrderTypes(OrderQueryModel oqm, Integer[] orderTypes) {
 		DetachedCriteria dc = DetachedCriteria.forClass(OrderModel.class);
 		dc.setProjection(Projections.rowCount());
 		doQbc2(dc, oqm, orderTypes);
+		List<Long> count = this.getHibernateTemplate().findByCriteria(dc);
+		return count.get(0).intValue();
+	}
+
+	@Override
+	public List<OrderModel> getAllTypes(OrderQueryModel oqm, Integer pageNum,
+			Integer pageCount, Integer[] types) {
+		DetachedCriteria dc = DetachedCriteria.forClass(OrderModel.class);
+		doQbc3(dc, oqm, types);
+		return this.getHibernateTemplate().findByCriteria(dc,
+				(pageNum - 1) * pageCount, pageCount);
+	}
+
+	@Override
+	public Integer getAllTypes(OrderQueryModel oqm, Integer[] types) {
+		DetachedCriteria dc = DetachedCriteria.forClass(OrderModel.class);
+		dc.setProjection(Projections.rowCount());
+		doQbc3(dc, oqm, types);
 		List<Long> count = this.getHibernateTemplate().findByCriteria(dc);
 		return count.get(0).intValue();
 	}

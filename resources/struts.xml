@@ -105,6 +105,8 @@
     		
     		<!-- 审核 -->
     		<result name="buyCheckList">/WEB-INF/jsps/order/buy/buyCheckList.jsp</result>
+    		<result name="toBuyCheckList" type="redirectAction">order_buyCheckList</result>
+    		<result name="buyCheckDetail">/WEB-INF/jsps/order/buy/buyCheckDetail.jsp</result>
     		
     		<!-- AJAX -->
     		<result name="ajaxGetGtmAndGm" type="json">
@@ -133,8 +135,15 @@
     		</result>
     	</action>
     	
-    	<!-- OrderDetail -->
+    	<!-- OrderDetail --> 
     	<action name="orderDetail_*" class="orderDetailAction" method="{1}">
+    	</action>
+    	
+    	<!-- transport -->
+    	<action name="transport_*" class="orderAction" method="{1}">
+    		<result name="taskList">/WEB-INF/jsps/transport/taskList.jsp</result>
+    		<result name="taskDetail">/WEB-INF/jsps/transport/taskDetail.jsp</result>
+    		<result name="totaskList" type="redirectAction">transport_taskList</result>
     	</action>
     </package>
 </struts>

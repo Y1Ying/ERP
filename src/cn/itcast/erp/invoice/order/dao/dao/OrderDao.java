@@ -11,7 +11,12 @@ public interface OrderDao extends BaseDao<OrderModel> {
 	public List<OrderModel> getAllOrderTypes(OrderQueryModel oqm,
 			Integer pageNum, Integer pageCount, Integer[] orderTypes);
 
-	public int getCountOrderTypes(OrderQueryModel oqm,
+	public Integer getCountOrderTypes(OrderQueryModel oqm,
 			Integer[] buyCheckOrderTypes);
+
+	public List<OrderModel> getAllTypes(OrderQueryModel oqm, Integer pageNum,
+			Integer pageCount, Integer[] types);
+
+	public Integer getAllTypes(OrderQueryModel oqm, Integer[] types);
 
 }

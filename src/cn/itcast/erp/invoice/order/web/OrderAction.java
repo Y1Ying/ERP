@@ -2,6 +2,8 @@ package cn.itcast.erp.invoice.order.web;
 
 import java.util.List;
 
+import cn.itcast.erp.auth.emp.business.ebi.EmpEbi;
+import cn.itcast.erp.auth.emp.vo.EmpModel;
 import cn.itcast.erp.invoice.goods.business.ebi.GoodsEbi;
 import cn.itcast.erp.invoice.goods.vo.GoodsModel;
 import cn.itcast.erp.invoice.goodstype.business.ebi.GoodsTypeEbi;
@@ -21,7 +23,11 @@ public class OrderAction extends BaseAction {
 	private SupplierEbi supplierEbi;
 	private GoodsTypeEbi goodsTypeEbi;
 	private GoodsEbi goodsEbi;
+	private EmpEbi empEbi;
 
+	public void setEmpEbi(EmpEbi empEbi) {
+		this.empEbi = empEbi;
+	}
 	public void setGoodsEbi(GoodsEbi goodsEbi) {
 		this.goodsEbi = goodsEbi;
 	}
@@ -119,6 +125,49 @@ public class OrderAction extends BaseAction {
 		put("orderList", orderList);
 		return "buyCheckList";
 
+	}
+
+	public String buyCheckDetail() {
+		// 根据om.uuid查询om，页面显示
+		om = orderEbi.get(om.getUuid());
+		return "buyCheckDetail";
+	}
+
+	// 审核通过
+	public String buyCheckPass() {
+		// 业务层
+		orderEbi.buyCheckPass(om.getUuid(), getLogin());
+		return "toBuyCheckList";
+	}
+
+	// 驳回
+	public String buyCheckNoPass() {
+		orderEbi.buyCheckNoPass(om.getUuid(), getLogin());
+		return "toBuyCheckList";
+	}
+
+	// ----------运输任务相关---------
+
+	public String taskList() {
+		setDataTotal(orderEbi.getCountTask(oqm));
+		List<OrderModel> orderList = orderEbi.getAllTask(oqm, pageNum,
+				pageCount);
+		put("orderList", orderList);
+		return "taskList";
+	}
+
+	public String taskDetail() {
+		// 加载运输部门的所有员工信息
+		List<EmpModel> empList = empEbi.getByDep(getLogin().getDm().getUuid());
+		put("empList", empList);
+		om = orderEbi.get(om.getUuid());
+		return "taskDetail";
+	}
+
+	// 指派任务
+	public String assignTask() {
+		orderEbi.assignTask(om.getUuid(), om.getCompleter());
+		return "totaskList";
 	}
 
 	// ---------AJAX----------

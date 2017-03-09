@@ -161,4 +161,9 @@ public class EmpEbo implements EmpEbi {
 		// 重新建立所有关系
 
 	}
+
+	@Override
+	public List<EmpModel> getByDep(Long uuid) {
+		return empDao.getAllByDepUuid(uuid);
+	}
 }

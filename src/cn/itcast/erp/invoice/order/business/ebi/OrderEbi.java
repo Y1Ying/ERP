@@ -45,4 +45,31 @@ public interface OrderEbi extends BaseEbi<OrderModel> {
 	public List<OrderModel> getAllBuyCheck(OrderQueryModel oqm,
 			Integer pageNum, Integer pageCount);
 
+	/**
+	 * 采购审核通过
+	 * 
+	 * @param uuid
+	 *            被审核的订单id
+	 * @param checker
+	 *            审核人
+	 */
+	public void buyCheckPass(Long uuid, EmpModel checker);
+
+	public void buyCheckNoPass(Long uuid, EmpModel checker);
+
+	public int getCountTask(OrderQueryModel oqm);
+
+	public List<OrderModel> getAllTask(OrderQueryModel oqm, Integer pageNum,
+			Integer pageCount);
+
+	/**
+	 * 指派运输任务
+	 * 
+	 * @param uuid
+	 *            订单UUID
+	 * @param completer
+	 *            跟单人
+	 */
+	public void assignTask(Long uuid, EmpModel completer);
+
 }
