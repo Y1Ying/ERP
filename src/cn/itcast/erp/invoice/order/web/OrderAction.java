@@ -167,7 +167,30 @@ public class OrderAction extends BaseAction {
 	// 指派任务
 	public String assignTask() {
 		orderEbi.assignTask(om.getUuid(), om.getCompleter());
-		return "totaskList";
+		return "toTaskList";
+	}
+
+	// 查询当前登录人运输任务
+	public String tasks() {
+		// 当前登录人查询的任务，只能查询自己的任务,所有查询条件要设置条件，跟单人为登录人
+		setDataTotal(orderEbi.getCountTask(oqm, getLogin()));
+		List<OrderModel> orderList = orderEbi.getAllTask(oqm, pageNum,
+				pageCount, getLogin());
+		put("orderList", orderList);
+		return "tasks";
+	}
+
+	// 运输任务详情
+	public String task() {
+		om = orderEbi.get(om.getUuid());
+		return "task";
+	}
+
+	// 运输任务完成
+	public String endTask() {
+		orderEbi.endTask(om.getUuid());
+		return "toTasks";
+
 	}
 
 	// ---------AJAX----------

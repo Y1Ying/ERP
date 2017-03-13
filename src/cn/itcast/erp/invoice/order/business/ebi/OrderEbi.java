@@ -72,4 +72,11 @@ public interface OrderEbi extends BaseEbi<OrderModel> {
 	 */
 	public void assignTask(Long uuid, EmpModel completer);
 
+	public Integer getCountTask(OrderQueryModel oqm, EmpModel login);
+
+	public List<OrderModel> getAllTask(OrderQueryModel oqm, Integer pageNum,
+			Integer pageCount, EmpModel login);
+
+	public void endTask(Long uuid);
+
 }

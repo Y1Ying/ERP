@@ -189,4 +189,30 @@ public class OrderEbo implements OrderEbi {
 		temp.setCompleter(completer);
 	}
 
+	@Override
+	public Integer getCountTask(OrderQueryModel oqm, EmpModel login) {
+		oqm.setCompleter(login);
+		return orderDao.getCount(oqm);
+	}
+
+	@Override
+	public List<OrderModel> getAllTask(OrderQueryModel oqm, Integer pageNum,
+			Integer pageCount, EmpModel login) {
+		// 设置当前登录人为跟单人
+		oqm.setCompleter(login);
+		return orderDao.getAll(oqm, pageNum, pageCount);
+	}
+
+	@Override
+	public void endTask(Long uuid) {
+		// 快照
+		OrderModel temp = orderDao.get(uuid);
+		// 逻辑校验(集合包含性判定)
+		if (!temp.getType().equals(OrderModel.ORDER_TYPE_OF_BUY_BUYING)) {
+			throw new AppException("对不起！请不要进行非法操作");
+		}
+		// 设置状态为入库中
+		temp.setType(OrderModel.ORDER_TYPE_OF_BUY_IN_STORE);
+	}
+
 }

@@ -143,7 +143,16 @@
     	<action name="transport_*" class="orderAction" method="{1}">
     		<result name="taskList">/WEB-INF/jsps/transport/taskList.jsp</result>
     		<result name="taskDetail">/WEB-INF/jsps/transport/taskDetail.jsp</result>
-    		<result name="totaskList" type="redirectAction">transport_taskList</result>
+    		<result name="toTaskList" type="redirectAction">transport_taskList</result>
+    		
+    		<result name="tasks" >/WEB-INF/jsps/transport/tasks.jsp</result>
+    		<result name="task" >/WEB-INF/jsps/transport/task.jsp</result>
+    		<result name="toTasks" type="redirectAction">transport_tasks</result>
     	</action>
+    	
+    	<!-- Store -->
+    	<action name="store_*" class="storeAction" method="{1}">
+    	</action>
+    	
     </package>
 </struts>
