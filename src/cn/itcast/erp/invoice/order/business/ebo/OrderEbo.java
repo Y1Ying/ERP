@@ -7,17 +7,39 @@ import java.util.Set;
 
 import cn.itcast.erp.auth.emp.vo.EmpModel;
 import cn.itcast.erp.invoice.goods.vo.GoodsModel;
+import cn.itcast.erp.invoice.operdetail.dao.dao.OperDetailDao;
+import cn.itcast.erp.invoice.operdetail.vo.OperDetailModel;
 import cn.itcast.erp.invoice.order.business.ebi.OrderEbi;
 import cn.itcast.erp.invoice.order.dao.dao.OrderDao;
 import cn.itcast.erp.invoice.order.vo.OrderModel;
 import cn.itcast.erp.invoice.order.vo.OrderQueryModel;
+import cn.itcast.erp.invoice.orderdetail.dao.dao.OrderDetailDao;
 import cn.itcast.erp.invoice.orderdetail.vo.OrderDetailModel;
+import cn.itcast.erp.invoice.store.vo.StoreModel;
+import cn.itcast.erp.invoice.storeDetail.dao.dao.StoreDetailDao;
+import cn.itcast.erp.invoice.storeDetail.vo.StoreDetailModel;
 import cn.itcast.erp.util.base.BaseQueryModel;
 import cn.itcast.erp.util.exception.AppException;
 import cn.itcast.erp.util.num.NumUtil;
 
 public class OrderEbo implements OrderEbi {
 	private OrderDao orderDao;
+	private OrderDetailDao orderDetailDao;
+	private StoreDetailDao storeDetailDao;
+	private OperDetailDao operDetailDao;
+
+	public void setOperDetailDao(OperDetailDao operDetailDao) {
+		this.operDetailDao = operDetailDao;
+	}
+
+	public void setStoreDetailDao(StoreDetailDao storeDetailDao) {
+		this.storeDetailDao = storeDetailDao;
+	}
+
+	public void setOrderDetailDao(OrderDetailDao orderDetailDao) {
+		this.orderDetailDao = orderDetailDao;
+	}
+
 	public void setOrderDao(OrderDao orderDao) {
 		this.orderDao = orderDao;
 	}
@@ -80,6 +102,8 @@ public class OrderEbo implements OrderEbi {
 			OrderDetailModel odm = new OrderDetailModel();
 			// 设置订单明细的数量
 			odm.setNum(nums[i]);
+			// 设置订单剩余未入库数量值
+			odm.setSurplus(nums[i]);
 			// 设置订单明细单价
 			odm.setPrice(prices[i]);
 			// 设置订单明细商品
@@ -117,7 +141,7 @@ public class OrderEbo implements OrderEbi {
 			OrderModel.ORDER_ORDERTYPE_OF_RETURN_BUY};
 
 	@Override
-	public int getCountBuyCheck(OrderQueryModel oqm) {
+	public Integer getCountBuyCheck(OrderQueryModel oqm) {
 		return orderDao.getCountOrderTypes(oqm, buyCheckOrderTypes);
 	}
 
@@ -165,7 +189,7 @@ public class OrderEbo implements OrderEbi {
 			OrderModel.ORDER_TYPE_OF_BUY_COMPLETE};
 
 	@Override
-	public int getCountTask(OrderQueryModel oqm) {
+	public Integer getCountTask(OrderQueryModel oqm) {
 		return orderDao.getAllTypes(oqm, taskTypes);
 	}
 
@@ -215,4 +239,85 @@ public class OrderEbo implements OrderEbi {
 		temp.setType(OrderModel.ORDER_TYPE_OF_BUY_IN_STORE);
 	}
 
+	@Override
+	public Integer getCountInStore(OrderQueryModel oqm) {
+		oqm.setType(OrderModel.ORDER_TYPE_OF_BUY_IN_STORE);
+		return orderDao.getCount(oqm);
+	}
+
+	@Override
+	public List<OrderModel> getAllInStore(OrderQueryModel oqm, Integer pageNum,
+			Integer pageCount) {
+		// 入库数据状态必然是正在入库中（采购入库中，销售退货入库中）
+		oqm.setType(OrderModel.ORDER_TYPE_OF_BUY_IN_STORE);
+		return orderDao.getAll(oqm, pageNum, pageCount);
+	}
+
+	@Override
+	public OrderDetailModel inGoods(Long storeUuid, Long odmUuid, Integer num,
+			EmpModel login) {
+		// 入库
+		// 1.订单明细中的剩余数量
+		// 快照
+		OrderDetailModel odm = orderDetailDao.get(odmUuid);
+		OrderModel om = odm.getOm();
+
+		if (!om.getType().equals(OrderModel.ORDER_TYPE_OF_BUY_IN_STORE)) {
+			throw new AppException("悟空！不要调皮！");
+		}
+
+		if (odm.getSurplus() < num) {
+			throw new AppException("悟空！不要调皮！");
+		}
+		// 更新订单明细的剩余数量
+		odm.setSurplus(odm.getSurplus() - num);
+
+		// 货物信息需要使用
+		GoodsModel gm = odm.getGm();
+		StoreModel sm = new StoreModel();
+		sm.setUuid(storeUuid);
+		// 2. 库存数量变化
+		// 使用快照更新数量
+		// 按照仓库与货物查询
+		StoreDetailModel sdm = storeDetailDao.getBySmAndGm(storeUuid,
+				gm.getUuid());
+		// 判断该货物咋指定仓库中有没有存储过
+		if (sdm != null) {
+			// 如果存储过，快照更新
+			// 修改当前库存数量
+			sdm.setNum(sdm.getNum() + num);
+		} else {
+			// 没有存储过，新增数据
+			sdm = new StoreDetailModel();
+			sdm.setNum(num);
+			sdm.setGm(gm);
+			sdm.setSm(sm);
+			storeDetailDao.save(sdm);
+		}
+		// 3.数据可追踪：记录操作日志
+		OperDetailModel opdm = new OperDetailModel();
+		opdm.setNum(num);
+		opdm.setOperTime(System.currentTimeMillis());
+		opdm.setType(OperDetailModel.OPER_TYPE_OF_IN);
+		opdm.setGm(gm);
+		opdm.setSm(sm);
+		opdm.setEm(login);
+
+		operDetailDao.save(opdm);
+
+		// 4.设置订单的状态为入库完毕
+
+		Integer sum = 0;
+		for (OrderDetailModel temp : om.getOdms()) {
+			sum += temp.getSurplus();
+		}
+
+		if (sum == 0) {
+			// 全部入库完毕
+			om.setType(OrderModel.ORDER_TYPE_OF_BUY_COMPLETE);
+			om.setEndTime(System.currentTimeMillis());
+		}
+
+		return odm;
+	}
 }

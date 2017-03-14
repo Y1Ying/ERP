@@ -108,6 +108,10 @@
     		<result name="toBuyCheckList" type="redirectAction">order_buyCheckList</result>
     		<result name="buyCheckDetail">/WEB-INF/jsps/order/buy/buyCheckDetail.jsp</result>
     		
+    		<!-- 入库 -->
+    		<result name="inStoreList">/WEB-INF/jsps/order/in/inStoreList.jsp</result>
+    		<result name="inStoreDetail">/WEB-INF/jsps/order/in/inStoreDetail.jsp</result>
+    		
     		<!-- AJAX -->
     		<result name="ajaxGetGtmAndGm" type="json">
     		<!-- 如果是action可以不写
@@ -133,10 +137,23 @@
     				inPriceView
     			</param>
     		</result>
+    		<result name="ajaxInGodds" type="json">
+    			<param name="root">odm</param>
+    			<param name="includeProperties">
+    				num,
+    				surplus
+    			</param>
+    		</result>
+    		
+    		
     	</action>
     	
     	<!-- OrderDetail --> 
     	<action name="orderDetail_*" class="orderDetailAction" method="{1}">
+    		<result name="ajaxGetSurplus" type="json">
+    			<param name="root">om</param>
+    			<param name="includeProperties">surplus</param>
+    		</result>
     	</action>
     	
     	<!-- transport -->
@@ -152,6 +169,14 @@
     	
     	<!-- Store -->
     	<action name="store_*" class="storeAction" method="{1}">
+    	</action>
+    	
+    	<!-- StoreDetail -->
+    	<action name="storeDetail_*" class="storeDetailAction" method="{1}">
+    	</action>
+    	
+    	<!-- OperDetail -->
+    	<action name="operDetail_*" class="operDetailAction" method="{1}">
     	</action>
     	
     </package>

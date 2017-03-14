@@ -11,6 +11,9 @@ import cn.itcast.erp.invoice.goodstype.vo.GoodsTypeModel;
 import cn.itcast.erp.invoice.order.business.ebi.OrderEbi;
 import cn.itcast.erp.invoice.order.vo.OrderModel;
 import cn.itcast.erp.invoice.order.vo.OrderQueryModel;
+import cn.itcast.erp.invoice.orderdetail.vo.OrderDetailModel;
+import cn.itcast.erp.invoice.store.business.ebi.StoreEbi;
+import cn.itcast.erp.invoice.store.vo.StoreModel;
 import cn.itcast.erp.invoice.supplier.business.ebi.SupplierEbi;
 import cn.itcast.erp.invoice.supplier.vo.SupplierModel;
 import cn.itcast.erp.util.base.BaseAction;
@@ -24,7 +27,11 @@ public class OrderAction extends BaseAction {
 	private GoodsTypeEbi goodsTypeEbi;
 	private GoodsEbi goodsEbi;
 	private EmpEbi empEbi;
+	private StoreEbi storeEbi;
 
+	public void setStoreEbi(StoreEbi storeEbi) {
+		this.storeEbi = storeEbi;
+	}
 	public void setEmpEbi(EmpEbi empEbi) {
 		this.empEbi = empEbi;
 	}
@@ -193,6 +200,24 @@ public class OrderAction extends BaseAction {
 
 	}
 
+	// -------------入库相关-------------
+	public String inStoreList() {
+		setDataTotal(orderEbi.getCountInStore(oqm));
+		List<OrderModel> orderList = orderEbi.getAllInStore(oqm, pageNum,
+				pageCount);
+		put("orderList", orderList);
+		return "inStoreList";
+	}
+
+	// 入库明细页
+	public String inStoreDetail() {
+		// 加载所有仓库信息
+		List<StoreModel> storeList = storeEbi.getAll();
+		put("storeList", storeList);
+		om = orderEbi.get(om.getUuid());
+		return "inStoreDetail";
+	}
+
 	// ---------AJAX----------
 	public Long supplierUuid;
 	public Long gtmUuid;
@@ -257,5 +282,20 @@ public class OrderAction extends BaseAction {
 	public String ajaxGetPrice() {
 		gm = goodsEbi.get(gmUuid);
 		return "ajaxGetPrice";
+	}
+
+	public Integer num;
+	public Long storeUuid;
+	public Long odmUuid;
+
+	private OrderDetailModel odm;
+
+	public OrderDetailModel getOdm() {
+		return odm;
+	}
+	// 入库
+	public String ajaxInGoods() {
+		odm = orderEbi.inGoods(storeUuid, odmUuid, num, getLogin());
+		return "ajaxInGodds";
 	}
 }

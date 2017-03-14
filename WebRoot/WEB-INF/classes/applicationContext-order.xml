@@ -12,10 +12,14 @@
 		<property name="goodsTypeEbi" ref="goodsTypeEbi"/>
 		<property name="supplierEbi" ref="supplierEbi"/>
 		<property name="empEbi" ref="empEbi"/>
+		<property name="storeEbi" ref="storeEbi"/>
 	</bean>
 	<!-- Ebi -->
 	<bean id="orderEbi" class="cn.itcast.erp.invoice.order.business.ebo.OrderEbo">
 		<property name="orderDao" ref="orderDao"/>
+		<property name="orderDetailDao" ref="orderDetailDao"/>
+		<property name="storeDetailDao" ref="storeDetailDao"/>
+		<property name="operDetailDao" ref="operDetailDao"/>
 	</bean>
 	<!-- Dao -->
 	<bean id="orderDao" class="cn.itcast.erp.invoice.order.dao.impl.OrderImpl">

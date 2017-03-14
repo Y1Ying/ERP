@@ -9,6 +9,7 @@
         </id>
         <property name="num"/>
         <property name="price"/>
+        <property name="surplus"/>
         
         <many-to-one
         	name="gm"	

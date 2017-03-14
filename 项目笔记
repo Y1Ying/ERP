@@ -216,6 +216,13 @@
 				3.动态添加组件	创建组件 $op = $('<option></option>');	最好从页面中直接复制出来使用
 				4.ajax请求标记控制ajax操作结束后才能进行二次操作
 				5.js保留两位小数
+				
+	15.模型驱动和属性驱动区别：
+			（1）模型驱动的Action必须实现ModelDriven接口，而且要提供相应的泛型，这里当然就是具体使用的Java Bean了。
+
+			（2）实现ModelDriven的getModel方法，其实就是简单的返回泛型的一个对象。
+
+			（3）在Action提供一个泛型的私有对象，这里就是定义一个User的user对象，并提供相应的getter与setter。
 		
 		
 	

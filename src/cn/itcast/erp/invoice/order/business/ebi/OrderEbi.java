@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.itcast.erp.auth.emp.vo.EmpModel;
 import cn.itcast.erp.invoice.order.vo.OrderModel;
 import cn.itcast.erp.invoice.order.vo.OrderQueryModel;
+import cn.itcast.erp.invoice.orderdetail.vo.OrderDetailModel;
 import cn.itcast.erp.util.base.BaseEbi;
 
 @Transactional
@@ -40,7 +41,7 @@ public interface OrderEbi extends BaseEbi<OrderModel> {
 	public List<OrderModel> getAllBuy(OrderQueryModel oqm, Integer pageNum,
 			Integer pageCount);
 
-	public int getCountBuyCheck(OrderQueryModel oqm);
+	public Integer getCountBuyCheck(OrderQueryModel oqm);
 
 	public List<OrderModel> getAllBuyCheck(OrderQueryModel oqm,
 			Integer pageNum, Integer pageCount);
@@ -57,7 +58,7 @@ public interface OrderEbi extends BaseEbi<OrderModel> {
 
 	public void buyCheckNoPass(Long uuid, EmpModel checker);
 
-	public int getCountTask(OrderQueryModel oqm);
+	public Integer getCountTask(OrderQueryModel oqm);
 
 	public List<OrderModel> getAllTask(OrderQueryModel oqm, Integer pageNum,
 			Integer pageCount);
@@ -78,5 +79,21 @@ public interface OrderEbi extends BaseEbi<OrderModel> {
 			Integer pageCount, EmpModel login);
 
 	public void endTask(Long uuid);
+
+	public Integer getCountInStore(OrderQueryModel oqm);
+
+	public List<OrderModel> getAllInStore(OrderQueryModel oqm, Integer pageNum,
+			Integer pageCount);
+
+	/**
+	 * 
+	 * @param storeUuid
+	 * @param odmUuid
+	 * @param num
+	 * @param login
+	 * @return
+	 */
+	public OrderDetailModel inGoods(Long storeUuid, Long odmUuid, Integer num,
+			EmpModel login);
 
 }
